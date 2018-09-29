@@ -1,38 +1,66 @@
-<html>
+<!doctype html>
+<html lang="en">
 	<head>
-		<title>OneMap2 XYZ (Default)</title>
-		<link rel="stylesheet" href="css/map.css" />
-		<script src="https://cdn.onemap.sg/leaflet/onemap-leaflet.js"></script>
+		<title>Little Red Crib</title>
+		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		<!--Include all stylesheets here-->
+		<link rel="stylesheet" href="css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="css/map.css"/>
+		<link rel="stylesheet" href="css/main.css" />
+
+		<!--Include all Google Fonts here-->
+		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Montserrat:200" rel="stylesheet">
+
+		<!--Include all JS/Leaflet dependencies here-->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script type="text/javascript"src="js/bootstrap.min.js"></script>
+		<script type="text/javascript"src="js/leaflet.js"></script>
+		<script type="text/javascript"src="js/leaflet-heat.js"></script>
+		<script type="text/javascript" src="js/locations.js"></script>	
 	</head>
+
 	<body style="margin: 0; background: #6da8e4;">
-		<div id='mapdiv' style='height:750px;'></div>
+
+		<div id="houseModal" class="sideModal">
+			<div class="closeModal">X</div>
+			<h1>Housing</h1>
+			<p>Filter any HDB houses in Singapore catered to your needs.</p>
+            <input class="form-control" type="search" placeholder="Enter address, postal code or block">
+            <br>
+            <button type="button" class="btn btn-outline-danger" onclick="showBoundaries()"">Filter</button>
+		</div>
+
+		<div id="navbar">
+			<ul class="navbar-functions">
+				<li onclick="showHouse()"><img src="images/house.png"></li>
+				<li onclick="showMRT()"><img src="images/mrt.png"></li>
+				<li onclick="showSchool()"><img src="images/school.png"></li>
+				<li onclick="showClinic()"><img src="images/clinic.png"></li>
+			</ul>
+		</div>
+
+
+		<div id='mapdiv' style='height:758px;'></div>
 	</body>
 
-	<script>
-		var center = L.bounds([1.56073, 105.11475], [1.16, 103.502]).getCenter();
-		var map = L.map('mapdiv').setView([center.x, center.y], 12);
+	<!--Include main map function here-->
+	<script src="js/map.js"></script>	
 
-		var basemap = L.tileLayer('https://maps-{s}.onemap.sg/v3/Default/{z}/{x}/{y}.png', {
-			detectRetina: true,
-			maxZoom: 18,
-			minZoom: 13		});
 
-		map.setMaxBounds([[1.48073, 104.1147], [1.16, 103.602]]);
+	<script type="text/javascript">
 
-		basemap.addTo(map);
+		var sideModal = document.getElementById("houseModal");
 
-		function getLocation() {
-			if (navigator.geolocation) {
-				navigator.geolocation.getCurrentPosition(showPosition);
-			} 
+		function showHouse(){
+			sideModal.classList.toggle("clicked");
+			console.log("House show");
 		}
 
-		function showPosition(position) {						
-			marker = new L.Marker([position.coords.latitude, position.coords.longitude], {bounceOnAdd: false}).addTo(map);						 
-			var popup = L.popup()
-			.setLatLng([position.coords.latitude, position.coords.longitude]) 
-			.setContent('You are here!')
-			.openOn(map);					
-		}
+
 	</script>
+
+		
 </html>

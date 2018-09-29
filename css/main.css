@@ -2,3 +2,82 @@ html, body {
 	margin: 0;
 	background: #6da8e4;
 }
+
+#navbar{
+	height: 100%;
+	width: 60px; 
+	right: 0; 
+    top: 0; 
+	background: #F53240;
+	z-index: 999;
+	position: fixed;
+	box-shadow: 0 15px 30px 0 rgba(0,0,0,0.11),
+           		0 5px 15px 0 rgba(0,0,0,0.08);
+
+}
+
+#navbar ul{
+	list-style-type: none;
+	padding: 0;
+	margin: 80px 0 0 0;
+	border-top:1.5px solid #c9222e;
+}
+
+#navbar ul li{
+	padding: 10px;
+	border-bottom:1.5px solid #c9222e;
+	text-align: center;
+}
+
+#navbar ul li:hover{
+	background:#c9222e;
+	cursor: pointer;
+}
+
+#navbar ul li img{
+	width: 30px;
+}
+
+.sideModal{
+	width: 280px;
+	height:100%;
+	background:#FFF;
+	padding: 0 20px;
+	position: fixed;
+	font-family: 'Roboto', sans-serif;
+	font-size: 13px;
+	right:-340px;
+	-webkit-transition:0.5s;
+	z-index: 998;
+	box-shadow: 0 15px 30px 0 rgba(0,0,0,0.11),
+           		0 5px 15px 0 rgba(0,0,0,0.08);
+}
+
+.sideModal h1{
+	font-size: 25px;
+	font-weight: 300;
+}
+
+.sideModal input{
+	font-size: 13px;
+}
+
+
+.closeModal{
+	width:50px;
+	height:50px;
+	position: relative;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 30px;
+	text-align: center;
+    color: #FFF;
+	background: #F53240;
+    right: 70px;
+    cursor: pointer;
+    box-shadow: 0 15px 30px 0 rgba(0,0,0,0.11),
+           		0 5px 15px 0 rgba(0,0,0,0.08);
+}
+
+#houseModal.clicked {
+	right: 60px;
+}
