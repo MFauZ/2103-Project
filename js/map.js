@@ -29,13 +29,14 @@ function getUserLocation() {
 	} 
 }
 
+//Add search bar to map
 new L.Control.GPlaceAutocomplete({
-        callback: function(place){
-            var loc = place.geometry.location;
-            map.panTo([loc.lat(), loc.lng()]);
-            map.setZoom(18);
-        }
-    }).addTo(map);
+    callback: function(place){
+        var loc = place.geometry.location;
+        map.panTo([loc.lat(), loc.lng()]);
+        map.setZoom(18);
+    }
+}).addTo(map);
 
 //Content for user location pin
 function showUserPosition(position) {						

@@ -17,6 +17,7 @@
 
 		<!--Include all JS/Leaflet dependencies here-->
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script type="text/javascript"src="js/popper.min.js"></script>
 		<script type="text/javascript"src="js/bootstrap.min.js"></script>
 		<script type="text/javascript"src="js/leaflet.js"></script>
 		<script type="text/javascript"src="js/leaflet-heat.js"></script>
@@ -36,9 +37,18 @@
 			<div class="closeModal">X</div>
 			<h1>Housing</h1>
 			<p>Filter any HDB houses in Singapore catered to your needs.</p>
-            <input class="form-control" type="search" placeholder="Enter address, postal code or block">
-            <br>
-            <button type="button" class="btn btn-outline-danger" onclick="showBoundaries()">Filter</button>
+			
+			<div class="dropdown">
+			  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			    Dropdown
+			  </button>
+			  <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+			    <button class="dropdown-item" type="button">Action</button>
+			    <button class="dropdown-item" type="button">Another action</button>
+			    <button class="dropdown-item" type="button">Something else here</button>
+			  </div>
+			</div>
+
 		</div>
 		<!--End of slidebar windows here-->
 
