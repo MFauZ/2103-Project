@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="css/bootstrap.min.css"/>
 		<link rel="stylesheet" href="css/map.css"/>
 		<link rel="stylesheet" href="css/main.css" />
+		<link rel="stylesheet" href="css/leaflet-gplaces-autocomplete.css" />
 
 		<!--Include all Google Fonts here-->
 		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -19,48 +20,50 @@
 		<script type="text/javascript"src="js/bootstrap.min.js"></script>
 		<script type="text/javascript"src="js/leaflet.js"></script>
 		<script type="text/javascript"src="js/leaflet-heat.js"></script>
-		<script type="text/javascript" src="js/locations.js"></script>	
+		<script type="text/javascript" src="js/locations.js"></script>
+		<script type="text/javascript" src="js/leaflet-gplaces-autocomplete.js"></script>
+
+		<!--Include all Google API dependencies here-->
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9887gzzndnzrP4E-bJkEmqESDRTW3GKw&libraries=places"></script>
+	
+
 	</head>
 
 	<body style="margin: 0; background: #6da8e4;">
 
+		<!--Start of slidebar windows here-->
 		<div id="houseModal" class="sideModal">
 			<div class="closeModal">X</div>
 			<h1>Housing</h1>
 			<p>Filter any HDB houses in Singapore catered to your needs.</p>
             <input class="form-control" type="search" placeholder="Enter address, postal code or block">
             <br>
-            <button type="button" class="btn btn-outline-danger" onclick="showBoundaries()"">Filter</button>
+            <button type="button" class="btn btn-outline-danger" onclick="showBoundaries()">Filter</button>
 		</div>
+		<!--End of slidebar windows here-->
 
+		<!--Start of red navbar here-->
 		<div id="navbar">
 			<ul class="navbar-functions">
-				<li onclick="showHouse()"><img src="images/house.png"></li>
-				<li onclick="showMRT()"><img src="images/mrt.png"></li>
-				<li onclick="showSchool()"><img src="images/school.png"></li>
-				<li onclick="showClinic()"><img src="images/clinic.png"></li>
+				<li id="houseButton"><img src="images/house.png"></li>
 			</ul>
 		</div>
+		<!--End of red navbar here-->
 
+		<!--Start of zoom controls here-->
+		<button type="button" class="btn btn-outline-danger" id="zoomOut">-</button>
+		<button type="button" class="btn btn-outline-danger" id="zoomIn">+</button>
+		<!--End of zoom controls here-->
 
 		<div id='mapdiv' style='height:758px;'></div>
+		
 	</body>
 
 	<!--Include main map function here-->
+	
 	<script src="js/map.js"></script>	
-
-
+	<script type="text/javascript" src="js/interface.js"></script>			
 	<script type="text/javascript">
 
-		var sideModal = document.getElementById("houseModal");
-
-		function showHouse(){
-			sideModal.classList.toggle("clicked");
-			console.log("House show");
-		}
-
-
 	</script>
-
-		
 </html>

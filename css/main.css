@@ -6,7 +6,7 @@ html, body {
 #navbar{
 	height: 100%;
 	width: 60px; 
-	right: 0; 
+	left: 0; 
     top: 0; 
 	background: #F53240;
 	z-index: 999;
@@ -78,6 +78,26 @@ html, body {
            		0 5px 15px 0 rgba(0,0,0,0.08);
 }
 
-#houseModal.clicked {
+#houseModal.clicked{
 	right: 60px;
+}
+
+#MRTModal.clicked{
+	right: 60px;
+}
+
+#zoomIn{
+	position: absolute;
+	right:100px;
+	bottom: 50px;
+	z-index: 999;
+	width: 40px;
+}
+
+#zoomOut{
+	position: absolute;
+	right:50px;
+	bottom: 50px;
+	z-index: 999;
+	width: 40px;
 }

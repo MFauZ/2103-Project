@@ -1,16 +1,26 @@
+//--------------------------------------Map functions---------------------------------//
 //Map initilize
-var center = L.bounds([1.56073, 105.11475], [1.16, 103.502]).getCenter();
+var center = L.bounds([1.56073, 105.11475], [1.16, 102.550]).getCenter();
 var map = L.map('mapdiv').setView([center.x, center.y], 12);
 var basemap = L.tileLayer('https://maps-{s}.onemap.sg/v3/Grey/{z}/{x}/{y}.png', {
-	detectRetina: true,
+	//detectRetina: true,
+	zoomControl: false,
 	maxZoom: 18,
-	minZoom: 13		});
+	minZoom: 12,
+});
 
-//Set map boundaries
-map.setMaxBounds([[1.48073, 104.1147], [1.16, 103.602]]);
+basemap.addTo(map); 											//Add map to screen
+map.removeControl(map.zoomControl); 							//Remove default map controls
+map.setMaxBounds([[1.48073, 104.1147], [1.16, 103.602]]); 		//Set map boundaries
 
-//Add map to screen
-basemap.addTo(map);
+//Set coordinates of map area clicked
+map.on('click', 
+	function(e){
+		var coord = e.latlng.toString().split(',');
+		var lat = coord[0].split('(');
+		var lng = coord[1].split(')');
+		console.log("Latitude: " + lat[1] + " and Longitude:" + lng[0]);
+	});
 
 //Get user current location
 function getUserLocation() {
@@ -18,6 +28,14 @@ function getUserLocation() {
 		navigator.geolocation.getCurrentPosition(showUserPosition);
 	} 
 }
+
+new L.Control.GPlaceAutocomplete({
+        callback: function(place){
+            var loc = place.geometry.location;
+            map.panTo([loc.lat(), loc.lng()]);
+            map.setZoom(18);
+        }
+    }).addTo(map);
 
 //Content for user location pin
 function showUserPosition(position) {						
@@ -55,3 +73,4 @@ function showBoundaries2(){
 	L.clearLayers()
 
 }
+
