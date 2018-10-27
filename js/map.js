@@ -75,3 +75,20 @@ function showBoundaries2(){
 
 }
 
+var markers = [];
+
+function showPins(){
+	// List of lat, lng
+	var places = [];
+	places.push([1.356120, 103.845371, 'Bishan']);
+	places.push([1.356699, 103.865133, 'Serangoon']);
+
+	for(var i=0; i<places.length; i++){
+		console.log(places[i]);
+		// Dynamically append to HTML 
+		$('body').append('<a id="marker_' + i + '" href="#">Marker ' + i + '</a><br>');
+		// Mark the locations on map
+		markers.push(L.marker([places[i][0], places[i][1]],{title:'marker_' + i + ''}).addTo(map).bindPopup(places[i][2]));
+	}
+
+}
