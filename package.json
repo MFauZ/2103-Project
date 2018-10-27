@@ -1,0 +1,29 @@
+{
+  "name": "littleredcrib",
+  "version": "1.0.0",
+  "description": "2103 Project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/azmansalleh/2103-Project.git"
+  },
+  "keywords": [
+    "db",
+    "mysql",
+    "rdmbs"
+  ],
+  "author": "Team Blackhole",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/azmansalleh/2103-Project/issues"
+  },
+  "homepage": "https://github.com/azmansalleh/2103-Project#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mysql": "^2.16.0",
+    "nodemon": "^1.18.5"
+  }
+}
