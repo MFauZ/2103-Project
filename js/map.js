@@ -9,6 +9,8 @@ var basemap = L.tileLayer('https://maps-{s}.onemap.sg/v3/Grey/{z}/{x}/{y}.png', 
 	minZoom: 12,
 });
 
+
+
 basemap.addTo(map); 											//Add map to screen
 map.removeControl(map.zoomControl); 							//Remove default map controls
 map.setMaxBounds([[1.48073, 104.1147], [1.16, 103.602]]); 		//Set map boundaries
@@ -31,11 +33,11 @@ function getUserLocation() {
 
 //Add search bar to map
 new L.Control.GPlaceAutocomplete({
-    callback: function(place){
-        var loc = place.geometry.location;
-        map.panTo([loc.lat(), loc.lng()]);
-        map.setZoom(18);
-    }
+	callback: function(place){
+		var loc = place.geometry.location;
+		map.panTo([loc.lat(), loc.lng()]);
+		map.setZoom(18);
+	}
 }).addTo(map);
 
 //Content for user location pin
@@ -57,13 +59,13 @@ getUserLocation()
 // var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
 
 var myStyle = {
-    "color": "#FC4445",
-    "weight": 5,
-    "opacity": 0.5
+	"color": "#FC4445",
+	"weight": 5,
+	"opacity": 0.5
 };
 
 var x = L.geoJson(SGBoundaries, {
-	 style: myStyle
+	style: myStyle
 })
 
 function showBoundaries(){
@@ -75,20 +77,179 @@ function showBoundaries2(){
 
 }
 
+
+
+
+
+/*************Start of functions for Housing tab*************/
+
+
+
 var markers = [];
 
-function showPins(){
-	// List of lat, lng
-	var places = [];
-	places.push([1.356120, 103.845371, 'Bishan']);
-	places.push([1.356699, 103.865133, 'Serangoon']);
 
-	for(var i=0; i<places.length; i++){
-		console.log(places[i]);
-		// Dynamically append to HTML 
-		$('body').append('<a id="marker_' + i + '" href="#">Marker ' + i + '</a><br>');
-		// Mark the locations on map
-		markers.push(L.marker([places[i][0], places[i][1]],{title:'marker_' + i + ''}).addTo(map).bindPopup(places[i][2]));
+var selVal = $('#localeDDL').val();
+console.log(selVal);
+// With new DB queries
+
+function showResidential(){
+	// default All so display straight away
+
+
+	// drop down selcteion change
+	selVal =  $('#localeDDL').val();
+	console.log(selVal);
+
+	if (selVal == "all"){
+		var xhr = new XMLHttpRequest();
+		xhr.timeout = 2000;
+		xhr.onreadystatechange = function(e){
+			    // console.log(this);
+			    if (xhr.readyState === 4){
+			    	if (xhr.status === 200){            
+						// filter out the key value pairs u need
+						res = JSON.parse(xhr.response);		
+						// Use performTask to plot N amount of pins at a time (every 10ms)
+						performTask(res,100,function(items,index){
+							console.log(items[index]);
+							$('body').append('<a id="marker_' + index + '" href="#">Marker ' + index + '</a><br>');
+						 	// Mark the locations on map
+						 	markers.push(L.marker([items[index].latitude,items[index].longitude],{title:'marker_' + index + ''})
+						 		.addTo(map).bindPopup(items[index].id));
+						 	// Below code needed for plotting more markers for nearby amentities function
+							// var marker = new L.Marker([items[index].latitude, items[index].longitude]).on('click', markerOnClick).addTo(map);
+
+						});
+
+
+					} else {
+						console.error("XHR didn't work: ", xhr.status);
+					}
+				}
+			}
+			xhr.ontimeout = function (){
+				console.error("request timedout: ", xhr);
+			}
+			xhr.open("get", "http://localhost:3000/residentialWithDistrict" , /*async*/ true);
+			xhr.send();
+
+		}
+
+
+		else if (selVal == "Ang Mo Kio"){
+			var xhr = new XMLHttpRequest();
+			xhr.timeout = 2000;
+			xhr.onreadystatechange = function(e){
+			    // console.log(this);
+			    if (xhr.readyState === 4){
+			    	if (xhr.status === 200){            
+						// filter out the key value pairs u need
+						res = JSON.parse(xhr.response);		
+						// Use performTask to plot N amount of pins at a time (every 10ms)
+						performTask(res,50,function(items,index){
+							console.log(items[index]);
+							$('body').append('<a id="marker_' + index + '" href="#">Marker ' + index + '</a><br>');
+						 	// Mark the locations on map
+						 	markers.push(L.marker([items[index].latitude,items[index].longitude],{title:'marker_' + index + ''})
+						 		.addTo(map).bindPopup(items[index].id));
+							// var marker = new L.Marker([items[index].latitude, items[index].longitude]).on('click', markerOnClick).addTo(map);
+
+						});
+
+
+					} else {
+						console.error("XHR didn't work: ", xhr.status);
+					}
+				}
+			}
+			xhr.ontimeout = function (){
+				console.error("request timedout: ", xhr);
+			}
+			xhr.open("get", "http://localhost:3000/residentialWithDistrictSearch/" + selVal, /*async*/ true);
+			xhr.send();
+		}
+		else if (selVal == "2"){
+			var xhr = new XMLHttpRequest();
+			xhr.timeout = 2000;
+			xhr.onreadystatechange = function(e){
+			    // console.log(this);
+			    if (xhr.readyState === 4){
+			    	if (xhr.status === 200){            
+						// filter out the key value pairs u need
+						res = JSON.parse(xhr.response);		
+						// Use performTask to plot N amount of pins at a time (every 10ms)
+						
+						// Testing remove marker
+						var marker = L.marker([0, 0]).addTo(map);
+						map.removeLayer(marker);
+						
+
+
+
+					} else {
+						console.error("XHR didn't work: ", xhr.status);
+					}
+				}
+			}
+			xhr.ontimeout = function (){
+				console.error("request timedout: ", xhr);
+			}
+			xhr.open("get", "http://localhost:3000/residentialWithDistrictSearch/" + selVal, /*async*/ true);
+			xhr.send();
+		}
+
+
+
+	} // end of button click function
+
+
+
+
+/*************End Housing tab functions*************/
+
+
+/*************Misc functions*************/
+	function performTask(items, numToProcess, processItem) {
+		var pos = 0;
+    // This is run once for every numToProcess items.
+    function iteration() {
+        // Calculate last position.
+        var j = Math.min(pos + numToProcess, items.length);
+        // Start at current position and loop to last position.
+        for (var i = pos; i < j; i++) {
+        	processItem(items, i);
+        }
+        // Increment current position.
+        pos += numToProcess;
+        // Only continue if there are more items to process.
+        if (pos < items.length)
+            setTimeout(iteration, 10); // Wait 10 ms to let the UI update.
+    }
+    iteration();
+}
+
+
+
+
+// detect which marker has been clicked, retrieve its latlng and find nearby amenities. then plot these amenities
+function markerOnClick(e)
+{
+	for(var i=0; i<res.length; i++){
+		alert();
+		var element = document. getElementById('marker_' + i);
+		element.parentNode.removeChild(element);
 	}
 
+	console.log("hi. you clicked the marker at " + e.latlng);
+	var regExp = /\(([^)]+)\)/; // get lat lng values in brackets '(' ')'
+	var selectedLatLng = regExp.exec(e.latlng);
+	//matches[1] contains the value between the parentheses	
+	var lat = selectedLatLng[1].split(',')[0];
+	var lng = selectedLatLng[1].split(',')[1];
+	console.log(lat,lng);
+
+	getNearbyAmenities_withGivenLocation(lat,lng);
 }
+
+
+/*************End Misc functions*************/

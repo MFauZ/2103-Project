@@ -1,191 +1,192 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<title>Little Red Crib</title>
-		<meta charset="utf-8"/>
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+	<title>Little Red Crib</title>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-		<!--Include all stylesheets here-->
-		<link rel="stylesheet" href="css/bootstrap.min.css"/>
-		<link rel="stylesheet" href="css/map.css"/>
-		<link rel="stylesheet" href="css/main.css" />
-		<link rel="stylesheet" href="css/leaflet-gplaces-autocomplete.css" />
+	<!--Include all stylesheets here-->
+	<link rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/map.css"/>
+	<link rel="stylesheet" href="css/main.css" />
+	<link rel="stylesheet" href="css/leaflet-gplaces-autocomplete.css" />
 
-		<!--Include all Google Fonts here-->
-		<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css?family=Montserrat:200" rel="stylesheet">
+	<!--Include all Google Fonts here-->
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:200" rel="stylesheet">
 
-		<!--Include all JS/Leaflet dependencies here-->
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-		<script type="text/javascript"src="js/popper.min.js"></script>
-		<script type="text/javascript"src="js/bootstrap.min.js"></script>
-		<script type="text/javascript"src="js/leaflet.js"></script>
-		<script type="text/javascript"src="js/leaflet-heat.js"></script>
-		<script type="text/javascript" src="js/locations.js"></script>
-		<script type="text/javascript" src="js/leaflet-gplaces-autocomplete.js"></script>
+	<!--Include all JS/Leaflet dependencies here-->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script type="text/javascript"src="js/popper.min.js"></script>
+	<script type="text/javascript"src="js/bootstrap.min.js"></script>
+	<script type="text/javascript"src="js/leaflet.js"></script>
+	<script type="text/javascript"src="js/leaflet-heat.js"></script>
+	<script type="text/javascript" src="js/locations.js"></script>
+	<script type="text/javascript" src="js/leaflet-gplaces-autocomplete.js"></script>
 
-		<!--Include all Google API dependencies here-->
-		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9887gzzndnzrP4E-bJkEmqESDRTW3GKw&libraries=places"></script>
+	<!--Include all Google API dependencies here-->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9887gzzndnzrP4E-bJkEmqESDRTW3GKw&libraries=places"></script>
 	
 
-	</head>
+</head>
 
-	<body style="margin: 0; background: #6da8e4;">
+<body style="margin: 0; background: #6da8e4;">
 
-		<!--Start of slidebar windows here-->
-		<div id="menuContainer">
-			<div id="propertyModal" class="sideModal">
-				<div class="closeModal">X</div>
-				<div class="bar"></div>
-				<h1>Housing</h1>
-				<p>Filter any HDB houses in Singapore catered to your needs.</p>
-
+	<!--Start of slidebar windows here-->
+	<div id="menuContainer">
+		<div id="propertyModal" class="sideModal">
+			<div class="closeModal">X</div>
+			<div class="bar"></div>
+			<h1>Housing</h1>
+			<p>Filter any HDB houses in Singapore catered to your needs.</p>
+			<div class="locale">
 				<h2>Locale:</h2>
-				<select class="custom-select">
-				  <option selected>AMK</option>
-				  <option value="1">One</option>
-				  <option value="2">Two</option>
-				  <option value="3">Three</option>
+				<select class="custom-select" id="localeDDL">
+					<option selected value="all">All</option>
+					<option value="Ang Mo Kio">AMK</option>
+					<option value="2">Two</option>
+					<option value="3">Three</option>
 				</select>
-
-				<h2>Year Bulit</h2>
-				<select class="custom-select">
-				  <option selected>2017</option>
-				  <option value="1">2016</option>
-				  <option value="2">2015</option>
-				  <option value="3">2014</option>
-				</select>
-
-				<h2>Rooms:</h2>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-				  <label class="form-check-label" for="inlineCheckbox1">1 Room</label>
-				</div>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-				  <label class="form-check-label" for="inlineCheckbox2">2 Room</label>
-				</div>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-				  <label class="form-check-label" for="inlineCheckbox3">3 Room</label>
-				</div>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option4">
-				  <label class="form-check-label" for="inlineCheckbox4">4 Room</label>
-				</div>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="option5">
-				  <label class="form-check-label" for="inlineCheckbox5">5 Room</label>
-				</div>				
-
-				<button type="button" class="btn search" onclick="showPins();">Search</button>
-
 			</div>
 
-			<div id="amenitiesModal" class="sideModal">
-				<div class="closeModal">X</div>
-				<div class="bar"></div>
-				<h1>Amenities</h1>
-				<p>Show all the nearest amenities to a location within the proximity</p>
+			<h2>Year Bulit</h2>
+			<select class="custom-select">
+				<option selected>2017</option>
+				<option value="1">2016</option>
+				<option value="2">2015</option>
+				<option value="3">2014</option>
+			</select>
 
-				<h2>Proximity: <span id="f" style="color: #F53240;">1km</span> </h2>
-				<div class="slidecontainer">
-				  
-				  <input type="range" min="1" max="10" value="1" class="slider" id="myRange">
-				</div>
-				<br>
-
-				<h2>School:</h2>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="option6">
-				  <label class="form-check-label" for="inlineCheckbox6">Primary</label>
-				</div>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="inlineCheckbox7" value="option7">
-				  <label class="form-check-label" for="inlineCheckbox7">Secondary</label>
-				</div>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="inlineCheckbox8" value="option8">
-				  <label class="form-check-label" for="inlineCheckbox8">Combined</label>
-				</div>
-				<br><br>
-				<h2>Transport:</h2>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="option6">
-				  <label class="form-check-label" for="inlineCheckbox6">Bus-stops</label>
-				</div>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="inlineCheckbox7" value="option7">
-				  <label class="form-check-label" for="inlineCheckbox7">MRT stations</label>
-				</div>
-				<br><br>
-				<h2>Police Stations:</h2>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="inlineCheckbox8" value="option8">
-				  <label class="form-check-label" for="inlineCheckbox8">NPC</label>
-				</div>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="inlineCheckbox9" value="option9">
-				  <label class="form-check-label" for="inlineCheckbox9">NPP</label>
-				</div>
-				<br><br>
-				<h2>Others:</h2>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="checkbox" id="inlineCheckbox8" value="option10">
-				  <label class="form-check-label" for="inlineCheckbox10">Community Centres</label>
-				</div>
-				</div>
-			
-			
-				
-
-
+			<h2>Rooms:</h2>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+				<label class="form-check-label" for="inlineCheckbox1">1 Room</label>
 			</div>
-
-			<div id="grantModal" class="sideModal">
-				<div class="closeModal">X</div>
-				<h1>Grant</h1>
-				<p>Filter any HDB houses in Singapore catered to your needs.</p>
-				
-
-
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
+				<label class="form-check-label" for="inlineCheckbox2">2 Room</label>
 			</div>
-
-			<div id="profileModal" class="sideModal">
-				<div class="closeModal">X</div>
-				<h1>Profile</h1>
-				<p>Filter any HDB houses in Singapore catered to your needs.</p>
-				
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
+				<label class="form-check-label" for="inlineCheckbox3">3 Room</label>
 			</div>
-		</div>
-		<!--End of slidebar windows here-->
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option4">
+				<label class="form-check-label" for="inlineCheckbox4">4 Room</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="option5">
+				<label class="form-check-label" for="inlineCheckbox5">5 Room</label>
+			</div>				
 
-		<!--Start of red navbar here-->
-		<div id="navbar">
-			<ul class="navbar-functions">
-				<li id="propertyButton"><img src="images/house.png"></li>
-				<li id="amenitiesButton"><img src="images/amenities.png"></li>
-				<li id="grantButton"><img src="images/grant.png"></li>
-				<li id="profileButton"><img src="images/profile.png"></li>
-			</ul>
+			<button type="button" class="btn search" onclick="showResidential();">Search</button>
 
 		</div>
-		<!--End of red navbar here-->
 
-		<!--Start of zoom controls here-->
-		<button type="button" class="btn btn-outline-danger" id="zoomOut">-</button>
-		<button type="button" class="btn btn-outline-danger" id="zoomIn">+</button>
-		<!--End of zoom controls here-->
+		<div id="amenitiesModal" class="sideModal">
+			<div class="closeModal">X</div>
+			<div class="bar"></div>
+			<h1>Amenities</h1>
+			<p>Show all the nearest amenities to a location within the proximity</p>
 
-		<div id='mapdiv' style='height:758px;'></div>
-		
-	</body>
+			<h2>Proximity: <span id="f" style="color: #F53240;">1km</span> </h2>
+			<div class="slidecontainer">
 
-	<!--Include main map function here-->
-	
-	<script src="js/map.js"></script>	
-	<script type="text/javascript" src="js/interface.js"></script>			
-	<script type="text/javascript">
+				<input type="range" min="1" max="10" value="1" class="slider" id="myRange">
+			</div>
+			<br>
 
-	</script>
+			<h2>School:</h2>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="option6">
+				<label class="form-check-label" for="inlineCheckbox6">Primary</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox7" value="option7">
+				<label class="form-check-label" for="inlineCheckbox7">Secondary</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox8" value="option8">
+				<label class="form-check-label" for="inlineCheckbox8">Combined</label>
+			</div>
+			<br><br>
+			<h2>Transport:</h2>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="option6">
+				<label class="form-check-label" for="inlineCheckbox6">Bus-stops</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox7" value="option7">
+				<label class="form-check-label" for="inlineCheckbox7">MRT stations</label>
+			</div>
+			<br><br>
+			<h2>Police Stations:</h2>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox8" value="option8">
+				<label class="form-check-label" for="inlineCheckbox8">NPC</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox9" value="option9">
+				<label class="form-check-label" for="inlineCheckbox9">NPP</label>
+			</div>
+			<br><br>
+			<h2>Others:</h2>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" id="inlineCheckbox8" value="option10">
+				<label class="form-check-label" for="inlineCheckbox10">Community Centres</label>
+			</div>
+		</div>
+
+
+
+
+
+	</div>
+
+	<div id="grantModal" class="sideModal">
+		<div class="closeModal">X</div>
+		<h1>Grant</h1>
+		<p>Filter any HDB houses in Singapore catered to your needs.</p>
+
+
+
+	</div>
+
+	<div id="profileModal" class="sideModal">
+		<div class="closeModal">X</div>
+		<h1>Profile</h1>
+		<p>Filter any HDB houses in Singapore catered to your needs.</p>
+
+	</div>
+</div>
+<!--End of slidebar windows here-->
+
+<!--Start of red navbar here-->
+<div id="navbar">
+	<ul class="navbar-functions">
+		<li id="propertyButton"><img src="images/house.png"></li>
+		<li id="amenitiesButton"><img src="images/amenities.png"></li>
+		<li id="grantButton"><img src="images/grant.png"></li>
+		<li id="profileButton"><img src="images/profile.png"></li>
+	</ul>
+
+</div>
+<!--End of red navbar here-->
+
+<!--Start of zoom controls here-->
+<button type="button" class="btn btn-outline-danger" id="zoomOut">-</button>
+<button type="button" class="btn btn-outline-danger" id="zoomIn">+</button>
+<!--End of zoom controls here-->
+
+<div id='mapdiv' style='height:758px;'></div>
+
+</body>
+
+<!--Include main map function here-->
+
+<script src="js/map.js"></script>	
+<script type="text/javascript" src="js/interface.js"></script>			
+<script type="text/javascript">
+
+</script>
 </html>
