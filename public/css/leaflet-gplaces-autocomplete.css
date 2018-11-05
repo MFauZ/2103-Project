@@ -1,0 +1,47 @@
+.leaflet-gac-wrapper {
+    height: 30px;
+}
+
+.leaflet-control-container .leaflet-gac-control {
+    width: 300px;
+    height: 38px;
+    padding: .375rem .75rem;
+    border-radius: 5px;
+    border: 1px #6d6d6d solid;
+    font-size:13px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.leaflet-control-container .leaflet-right .leaflet-gac-control {
+    position: fixed;
+    right: 30px;
+    top: 30px;
+    transition: width .3s ease .15s;
+}
+
+.leaflet-control-container .leaflet-gac-control:focus {
+    outline: none;
+}
+
+.leaflet-control-container .leaflet-gac-search-btn {
+    background: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+}
+
+.leaflet-control-container .leaflet-gac-search-btn .leaflet-gac-search-icon {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    background: #ff0;
+    /*background: :url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAC9ElEQVRoQ+2Y36tNQRTHPzdFRIo8KVJXRKSIiOiKlFLkiYgXSh6U/0KR8sQLESUi4oXcriglD0qJKKWUKCUiSulbs2/Ttn/M2ntmH9321Ok8nDVrrc9as2atOUNMkDU0QTjoQf63TPYZ6TOSKAL90UoU2MZq+4w0Dl2ijdaMrAV2ACPAMmAq8BN4AYwCt4EniXytVBsKsgQ4DWwJcPI+cAx4GSAbTSQEZDdwHphusPodOAhcN+xpJVoHshO4UWDhHaDIa01ymZpXILcLuNnKw8DNVSA6Ts9cHWTqngNHSupAdXMG0L5sqX5WdXHMqkDu5WpCx2Qv8LsiSCp+ZXCbJ6PMbQ0MbGOxMpCNwJin9QOwFPgaYGkO8AqY5cluAh4G7G0sUgZyFjjkaVVEs5oIMbYPuOgJngMOh2xsKlMGooguckrVI5YbDegC+ORl5TWw2KjDJF4G8sMr8gvuKjUpBu4A290mFf00qwKLfBGI+sU3T8kp4LhFqZPV0dIRy9YMQP0lySoC0bH45fqDjF4C9jew7mfkDzAF0HeSVXa03gDDzuJ7YL7Rer5G3gILjTpM4mUgl4E9nqbNbigMVa6x5ponfMX1oND9ZrkyEHXpB542dfR1btKtMzLTTQRZRiVvDUSdjX9+r+rsj4D13g6N6OrsVQUriFuAGmq2HgMbzJ4ZN1SBrAYEM9nTqX6gG+xugR0dpxPAgtxvGueVkY9G30ziddPvATfC55V+doOjnJsL6MHljyR5+eQwdSBy6Kh7VOkmarOSwoSAyHkV/0lgRQCJhkM9g4sylAwmFCTzX+O5ProEVAtyVn1GH73ZVTtPgZWAngGdwVhBAhIyLtIpTEoQEVXB6AbUOyXKbZYapDOYLkA6gekKpA5GF8QaSwHmZbsEqYOZDXxpCtM1SBlM0zfPOPcgQDIYDZcab666h1vV30y1iRoUiBzTpKyGqX8tW69BgrR23lfQg0QNZwRlfUYiBDGqij4jUcMZQVmfkQhBjKriL/HmdzP+LieSAAAAAElFTkSuQmCC") no-repeat center center;*/
+}
+
+.leaflet-control-container .leaflet-gac-hidden {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    transition: width .3s ease .15s;
+}

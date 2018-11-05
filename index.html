@@ -32,6 +32,28 @@
 
 <body style="margin: 0; background: #6da8e4;">
 
+	<div id="register-div">
+		<div id="registerclose">X</div>
+	    <div class="panel">
+		   <h1>Registration</h1>
+		   <p>Please fill up the following fields to create a profile.</p>
+		</div>
+	    <form action="/controllers/register-controller" method="POST">   
+	        <div class="form-group">
+	            <input type="email" name="email" class="form-control" id="registerEmail" placeholder="Email Address">
+	        </div>
+	        <div class="form-group">
+	            <input type="text" name="username" class="form-control" id="registerusername" placeholder="Username">
+	        </div>
+	        <div class="form-group">
+	            <input type="password" name="password" class="form-control" id="registerPassword" placeholder="Password">
+	        </div>
+    		<button type="submit" class="btn search">Register</button>
+    	</form>
+    </div>
+
+    <div id="registerlightbox"></div>
+
 	<!--Start of slidebar windows here-->
 	<div id="menuContainer">
 		<div id="propertyModal" class="sideModal">
@@ -145,6 +167,7 @@
 
 	<div id="grantModal" class="sideModal">
 		<div class="closeModal">X</div>
+		<div class="bar"></div>
 		<h1>Grant</h1>
 		<p>Filter any HDB houses in Singapore catered to your needs.</p>
 
@@ -154,8 +177,22 @@
 
 	<div id="profileModal" class="sideModal">
 		<div class="closeModal">X</div>
+		<div class="bar"></div>
 		<h1>Profile</h1>
-		<p>Filter any HDB houses in Singapore catered to your needs.</p>
+		<p>Welcome to Little Red Crib. <br>You are not signed in, login or register to have a better experience.</p>
+		<p>Please enter your email and password</p>
+
+		<form action="/controllers/authenticate-controller" method="POST">
+	        <div class="form-group">
+	            <input type="email" name="email" class="form-control" id="loginEmail" placeholder="Email Address">
+	        </div>
+	        <div class="form-group">
+	            <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Password">
+	        </div>
+    		<button type="submit" class="btn search" value="Submit">Login</button>
+    	</form>
+
+    	<p id="registertrigger">Click here to register</p>
 
 	</div>
 </div>
@@ -186,7 +223,4 @@
 
 <script src="js/map.js"></script>	
 <script type="text/javascript" src="js/interface.js"></script>			
-<script type="text/javascript">
-
-</script>
 </html>
