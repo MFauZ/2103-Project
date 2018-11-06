@@ -16,7 +16,7 @@
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:200" rel="stylesheet">
 
 	<!--Include all JS/Leaflet dependencies here-->
-	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript"src="js/popper.min.js"></script>
 	<script type="text/javascript"src="js/bootstrap.min.js"></script>
 	<script type="text/javascript"src="js/leaflet.js"></script>
@@ -60,141 +60,149 @@
 			<div class="bar"></div>
 			<h1>Housing</h1>
 			<p>Filter any HDB houses in Singapore catered to your needs.</p>
-			<div class="locale">
-				<h2>Locale:</h2>
-				<select class="custom-select" id="localeDDL">
-					<option selected value="all">All</option>
-					<option value="Ang Mo Kio">AMK</option>
-					<option value="2">Two</option>
-					<option value="3">Three</option>
+
+			<form id="housingajax" method="POST" action="/housing">
+				<div class="locale">
+					<h2>Locale:</h2>
+					<select class="custom-select" id="localeDDL" name="locale">
+						<option selected value="Ang Mo Kio">Ang Mo Kio</option>
+						<option value="Balestier">Balestier</option>
+						<option value="Panjang">Bukit Panjang</option>
+						<option value="Timah">Bukit Timah</option>
+						<option value="Choa">Choa Chu Kang</option>
+						<option value="Eunos">Eunos</option>
+						<option value="Geylang">Geylang</option>
+						<option value="Holland">Holland</option>
+						<option value="Hougang">Hougang</option>
+						<option value="Jurong">Jurong</option>
+						<option value="Kranji">Kranji</option>
+						<option value="Punggol">Punggol</option>
+						<option value="Tanjong Pagar">Tanjong Pagar</option>
+						<option value="Toa Payoh">Toa Payoh</option>
+					</select>
+				</div>
+
+				<h2>Year Bulit</h2>
+				<select class="custom-select" name="year">
+					<option selected value="10">< 10 years</option>
+					<option value="15">10-15 years</option>
+					<option value="100">> 15 years</option>
 				</select>
-			</div>
 
-			<h2>Year Bulit</h2>
-			<select class="custom-select">
-				<option selected>2017</option>
-				<option value="1">2016</option>
-				<option value="2">2015</option>
-				<option value="3">2014</option>
-			</select>
-
-			<h2>Rooms:</h2>
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-				<label class="form-check-label" for="inlineCheckbox1">1 Room</label>
-			</div>
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
-				<label class="form-check-label" for="inlineCheckbox2">2 Room</label>
-			</div>
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
-				<label class="form-check-label" for="inlineCheckbox3">3 Room</label>
-			</div>
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option4">
-				<label class="form-check-label" for="inlineCheckbox4">4 Room</label>
-			</div>
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="option5">
-				<label class="form-check-label" for="inlineCheckbox5">5 Room</label>
-			</div>				
-
-			<button type="button" class="btn search" onclick="showResidential();">Search</button>
-
+				<h2>Rooms:</h2>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="One Room" name="roomtype">
+					<label class="form-check-label" for="inlineCheckbox1">1 Room</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Two Rooms" name="roomtype">
+					<label class="form-check-label" for="inlineCheckbox2">2 Room</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Three Rooms" name="roomtype">
+					<label class="form-check-label" for="inlineCheckbox3">3 Room</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="Four Rooms"  name="roomtype">
+					<label class="form-check-label" for="inlineCheckbox4">4 Room</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="Five Rooms"  name="roomtype">
+					<label class="form-check-label" for="inlineCheckbox5">5 Room</label>
+				</div>				
+				<button type="submit" value="Submit" class="btn search">Search</button>
+				<!-- <button type="button" class="btn search" value="Submit" onclick="showResidential();">Search</button> -->
+			</form>
 		</div>
 
 		<div id="amenitiesModal" class="sideModal">
 			<div class="closeModal">X</div>
 			<div class="bar"></div>
 			<h1>Amenities</h1>
-			<p>Show all the nearest amenities to a location within the proximity</p>
+			<p>Show all the nearest amenities to a location within the proximity. Click on a location on the map to mark.</p>
 
-			<h2>Proximity: <span id="f" style="color: #F53240;">1km</span> </h2>
-			<div class="slidecontainer">
+			<form id="amenitiesajax">
+				<h2>Marked Location:</h2>
+				<input type="text" name="currentlocation" class="form-control" placeholder="Location" id="currentlocation" readonly>
+				<br>
 
-				<input type="range" min="1" max="10" value="1" class="slider" id="myRange">
-			</div>
-			<br>
+				<h2>Proximity: <span id="proximity" style="color: #F53240;">1km</span> </h2>
+				<div class="slidecontainer">
+					<input type="range" min="1" max="10" value="1" class="slider" id="myRange">
+				</div>
+				<br>
 
-			<h2>School:</h2>
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="option6">
-				<label class="form-check-label" for="inlineCheckbox6">Primary</label>
-			</div>
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="inlineCheckbox7" value="option7">
-				<label class="form-check-label" for="inlineCheckbox7">Secondary</label>
-			</div>
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="inlineCheckbox8" value="option8">
-				<label class="form-check-label" for="inlineCheckbox8">Combined</label>
-			</div>
-			<br><br>
-			<h2>Transport:</h2>
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="option6">
-				<label class="form-check-label" for="inlineCheckbox6">Bus-stops</label>
-			</div>
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="inlineCheckbox7" value="option7">
-				<label class="form-check-label" for="inlineCheckbox7">MRT stations</label>
-			</div>
-			<br><br>
-			<h2>Police Stations:</h2>
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="inlineCheckbox8" value="option8">
-				<label class="form-check-label" for="inlineCheckbox8">NPC</label>
-			</div>
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="inlineCheckbox9" value="option9">
-				<label class="form-check-label" for="inlineCheckbox9">NPP</label>
-			</div>
-			<br><br>
-			<h2>Others:</h2>
-			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="checkbox" id="inlineCheckbox8" value="option10">
-				<label class="form-check-label" for="inlineCheckbox10">Community Centres</label>
-			</div>
+				<h2>School:</h2>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="primarysch" value="option6">
+					<label class="form-check-label" for="primarysch">Primary</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="secsch" value="option7">
+					<label class="form-check-label" for="secsch">Secondary</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="combsch" value="option8">
+					<label class="form-check-label" for="combsch">Combined</label>
+				</div>
+				<br><br>
+				<h2>Transport:</h2>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="busstops" value="option6">
+					<label class="form-check-label" for="busstops">Bus-stops</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="mrtstations" value="option7">
+					<label class="form-check-label" for="mrtstations">MRT stations</label>
+				</div>
+				<br><br>
+				<h2>Police Stations:</h2>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="npc" value="option8">
+					<label class="form-check-label" for="npc">NPC</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="npp" value="option9">
+					<label class="form-check-label" for="npp">NPP</label>
+				</div>
+				<br><br>
+				<h2>Others:</h2>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="hawker" value="option10">
+					<label class="form-check-label" for="hawker">Hawkers</label>
+				</div>
+			</form>
 		</div>
 
 
 
+		<div id="grantModal" class="sideModal">
+			<div class="closeModal">X</div>
+			<div class="bar"></div>
+			<h1>Grant</h1>
+			<p>Filter any HDB houses in Singapore catered to your needs.</p>
+		</div>
 
+		<div id="profileModal" class="sideModal">
+			<div class="closeModal">X</div>
+			<div class="bar"></div>
+			<h1>Profile</h1>
+			<p>Welcome to Little Red Crib. <br>You are not signed in, login or register to have a better experience.</p>
+			<p>Please enter your email and password</p>
 
+			<form action="/controllers/authenticate-controller" method="POST">
+		        <div class="form-group">
+		            <input type="email" name="email" class="form-control" id="loginEmail" placeholder="Email Address">
+		        </div>
+		        <div class="form-group">
+		            <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Password">
+		        </div>
+	    		<button type="submit" class="btn search" value="Submit">Login</button>
+	    	</form>
+
+	    	<p id="registertrigger">Click here to register</p>
+		</div>
 	</div>
-
-	<div id="grantModal" class="sideModal">
-		<div class="closeModal">X</div>
-		<div class="bar"></div>
-		<h1>Grant</h1>
-		<p>Filter any HDB houses in Singapore catered to your needs.</p>
-
-
-
-	</div>
-
-	<div id="profileModal" class="sideModal">
-		<div class="closeModal">X</div>
-		<div class="bar"></div>
-		<h1>Profile</h1>
-		<p>Welcome to Little Red Crib. <br>You are not signed in, login or register to have a better experience.</p>
-		<p>Please enter your email and password</p>
-
-		<form action="/controllers/authenticate-controller" method="POST">
-	        <div class="form-group">
-	            <input type="email" name="email" class="form-control" id="loginEmail" placeholder="Email Address">
-	        </div>
-	        <div class="form-group">
-	            <input type="password" name="password" class="form-control" id="loginPassword" placeholder="Password">
-	        </div>
-    		<button type="submit" class="btn search" value="Submit">Login</button>
-    	</form>
-
-    	<p id="registertrigger">Click here to register</p>
-
-	</div>
-</div>
 <!--End of slidebar windows here-->
 
 <!--Start of red navbar here-->
@@ -221,5 +229,7 @@
 <!--Include main map function here-->
 
 <script src="js/map.js"></script>	
-<script type="text/javascript" src="js/interface.js"></script>			
+<script type="text/javascript" src="js/interface.js"></script>		
+<script src="js/housingajax.js"></script>	
+<script src="js/amenitiesajax.js"></script>
 </html>

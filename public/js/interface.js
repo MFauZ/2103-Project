@@ -22,7 +22,7 @@ var bookmarkButton = document.getElementById("bookmarkButton")
 
 var slider = document.getElementById("myRange");
 var output = document.getElementById("demo");
-var y = document.getElementById("f");
+var proximity = document.getElementById("proximity");
 
 var registerbox = document.getElementById("register-div");
 var registerclose= document.getElementById("registerclose");
@@ -31,7 +31,7 @@ var registertrigger = document.getElementById("registertrigger");
 
 // Update the current slider value (each time you drag the slider handle)
 slider.oninput = function() {
-    y.innerHTML = this.value + "km";
+    proximity.innerHTML = this.value + "km";
 }
 
 registerclose.onclick = function(){
