@@ -15,7 +15,7 @@ module.exports.register=function(req,res){
       if (error) {
         res.json({
             status:false,
-            message:'there are some error with query'
+            message: error
         })
       }else{
           res.json({

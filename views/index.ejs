@@ -77,6 +77,7 @@
 						<option value="Jurong">Jurong</option>
 						<option value="Kranji">Kranji</option>
 						<option value="Punggol">Punggol</option>
+						<option value="Tampines">Tampines</option>
 						<option value="Tanjong Pagar">Tanjong Pagar</option>
 						<option value="Toa Payoh">Toa Payoh</option>
 					</select>
@@ -84,34 +85,38 @@
 
 				<h2>Year Bulit</h2>
 				<select class="custom-select" name="year">
-					<option selected value="10">< 10 years</option>
-					<option value="15">10-15 years</option>
-					<option value="100">> 15 years</option>
+					<option selected value="1930-2018">Any</option>
+					<option value="2001-2018">After 2000</option>
+					<option value="1990-2000">1990-2000</option>
+					<option value="1930-1989">Before 1990</option>
 				</select>
 
 				<h2>Rooms:</h2>
 				<div class="form-check form-check-inline">
-					<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="One Room" name="roomtype">
+					<input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="1" name="roomtype">
 					<label class="form-check-label" for="inlineCheckbox1">1 Room</label>
 				</div>
 				<div class="form-check form-check-inline">
-					<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Two Rooms" name="roomtype">
+					<input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="2" name="roomtype">
 					<label class="form-check-label" for="inlineCheckbox2">2 Room</label>
 				</div>
 				<div class="form-check form-check-inline">
-					<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Three Rooms" name="roomtype">
+					<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="3" name="roomtype">
 					<label class="form-check-label" for="inlineCheckbox3">3 Room</label>
 				</div>
 				<div class="form-check form-check-inline">
-					<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="Four Rooms"  name="roomtype">
+					<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="4"  name="roomtype">
 					<label class="form-check-label" for="inlineCheckbox4">4 Room</label>
 				</div>
 				<div class="form-check form-check-inline">
-					<input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="Five Rooms"  name="roomtype">
+					<input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="5"  name="roomtype">
 					<label class="form-check-label" for="inlineCheckbox5">5 Room</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="checkAll" name="checkAll">
+					<label class="form-check-label" for="checkAll">Check all</label>
 				</div>				
 				<button type="submit" value="Submit" class="btn search">Search</button>
-				<!-- <button type="button" class="btn search" value="Submit" onclick="showResidential();">Search</button> -->
 			</form>
 		</div>
 

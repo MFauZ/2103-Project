@@ -9,10 +9,15 @@ var basemap = L.tileLayer('https://maps-{s}.onemap.sg/v3/Grey/{z}/{x}/{y}.png', 
 	minZoom: 12,
 });
 
-
-
 basemap.addTo(map); 											//Add map to screen
-layerGroup = new L.LayerGroup().addTo(map);
+housingGroup = new L.LayerGroup().addTo(map);
+pschoolGroup = new L.LayerGroup().addTo(map);
+sschoolGroup = new L.LayerGroup().addTo(map);
+cschoolGroup = new L.LayerGroup().addTo(map);
+busGroup = new L.LayerGroup().addTo(map);
+npcGroup = new L.LayerGroup().addTo(map);
+nppGroup = new L.LayerGroup().addTo(map);
+hawkerGroup = new L.LayerGroup().addTo(map);
 map.removeControl(map.zoomControl); 							//Remove default map controls
 map.setMaxBounds([[1.48073, 104.1147], [1.16, 103.602]]); 		//Set map boundaries
 
@@ -54,22 +59,12 @@ function showUserPosition(position) {
 
 getUserLocation()
 
-
-// var latlngs = [
-//     [1.379781, 103.732491],
-//     [1.369530, 103.748643]
-// ];
-// var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
-
 var myStyle = {
 	"color": "#FC4445",
 	"weight": 5,
 	"opacity": 0.5
 };
 
-var x = L.geoJson(SGBoundaries, {
-	style: myStyle
-})
 
 function showBoundaries(){
 	var status = 0;
@@ -79,10 +74,6 @@ function showBoundaries2(){
 	L.clearLayers()
 
 }
-
-
-
-
 
 /*************Start of functions for Housing tab*************/
 
@@ -106,7 +97,8 @@ function markerOnClick(e)
 	var lng = selectedLatLng[1].split(',')[1];
 	console.log(lat,lng);
 
-	getNearbyAmenities_withGivenLocation(lat,lng);
+	//getNearbyAmenities_withGivenLocation(lat,lng);
+		
 }
 
 

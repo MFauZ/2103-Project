@@ -72,19 +72,24 @@
 						<option value="Timah">Bukit Timah</option>
 						<option value="Choa">Choa Chu Kang</option>
 						<option value="Eunos">Eunos</option>
+						<option value="Geylang">Geylang</option>
+						<option value="Holland">Holland</option>
+						<option value="Hougang">Hougang</option>
 						<option value="Jurong">Jurong</option>
 						<option value="Kranji">Kranji</option>
-						<option value="Holland">Holland</option>
-						<option value="Tanjong">Tanjong</option>
+						<option value="Punggol">Punggol</option>
+						<option value="Tampines">Tampines</option>
+						<option value="Tanjong Pagar">Tanjong Pagar</option>
 						<option value="Toa Payoh">Toa Payoh</option>
 					</select>
 				</div>
 
 				<h2>Year Bulit</h2>
 				<select class="custom-select" name="year">
-					<option selected value="10">< 10 years</option>
-					<option value="15">10-15 years</option>
-					<option value="100">> 15 years</option>
+					<option selected value="1930-2018">Any</option>
+					<option value="2001-2018">After 2000</option>
+					<option value="1990-2000">1990-2000</option>
+					<option value="1930-1989">Before 1990</option>
 				</select>
 
 				<h2>Rooms:</h2>
@@ -107,9 +112,12 @@
 				<div class="form-check form-check-inline">
 					<input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="5"  name="roomtype">
 					<label class="form-check-label" for="inlineCheckbox5">5 Room</label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="checkAll" name="checkAll">
+					<label class="form-check-label" for="checkAll">Check all</label>
 				</div>				
 				<button type="submit" value="Submit" class="btn search">Search</button>
-				<!-- <button type="button" class="btn search" value="Submit" onclick="showResidential();">Search</button> -->
 			</form>
 		</div>
 
@@ -167,7 +175,7 @@
 				<h2>Others:</h2>
 				<div class="form-check form-check-inline">
 					<input class="form-check-input" type="checkbox" id="hawker" value="option10">
-					<label class="form-check-label" for="hawker">Community Centres</label>
+					<label class="form-check-label" for="hawker">Hawkers</label>
 				</div>
 			</form>
 		</div>
@@ -184,6 +192,24 @@
 			<div class="bar"></div>
 			<h1>Bookmarks</h1>
 			<p>View your residential bookmarks here.</p>
+
+			<form id="bookmarkajax" method="POST" action="/bookmark">
+				<div class="locale">
+					<h2>Bookmark name</h2>
+					<input type="text" name="bookmarkname" class="form-control" placeholder="eg. mybookmark" id="bookmarkname" required>
+				</div>
+				<br>
+
+				<h2>Location</h2>
+				<input type="text" name="postalcode" class="form-control" placeholder="eg. 618432" id="postalcode" maxlength="6" required>
+				<br>
+
+				
+				<button type="submit" value="Submit" class="btn search">Add bookmark</button>
+				<button type="submit" value="Submit" class="btn search">View my bookmarks</button>
+				<!-- <button type="button" class="btn search" value="Submit" onclick="showResidential();">Search</button> -->
+			</form>
+
 		</div>
 
 		<div id="profileModal" class="sideModal">
@@ -227,5 +253,5 @@
 <script src="js/map.js"></script>	
 <script type="text/javascript" src="js/interface.js"></script>
 <script src="js/housingajax.js"></script>		
-<script src="js/amenities.js"></script>			
+<script src="js/amenitiesajax.js"></script>		
 </html>

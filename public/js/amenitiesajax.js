@@ -1,8 +1,7 @@
 $(() => {
 
 	//Get values from 'proxmity' and 'marked location'
-	var proxmity = $('#proxmity'.value);
-	var currentLocation = $('#currentLocation'.value);
+	//var proximity = document.getElementById("proximity").innerHTML;
 
 	//Checkboxes
 	const $primarysch = $('#primarysch');
@@ -14,271 +13,280 @@ $(() => {
 	const $npp = $('#npp');
 	const $hawker = $('#hawker');
 
-	$primarysch.on('change', runPrimary);
-	$secondarysch.on('change', runSecondary);
-	$combsch.on('change', runCombined);
-	$busstops.on('change', runBusstops);
-	$mrtstations.on('change', runMrtstations);
-	$npc.on('change', runNpc);
-	$npp.on('change', runNpp);
-	$hawker.on('change', runHawker);
+	$primarysch.on('change', runPrimaryQuery);
+	$secondarysch.on('change', runSecondaryQuery);
+	$combsch.on('change', runCombinedQuery);
+	$busstops.on('change', runBusstopsQuery);
+	$npc.on('change', runNpcQuery);
+	$npp.on('change', runNppQuery);
+	$hawker.on('change', runhawkerQuery);
 
+	document.getElementById("currentlocation").value = "1.37007 103.84895";
 
 	// --------------Schools --------------- //
 
-	// Check if primary school query is requested
-	function runPrimary() {
-		if (this.checked){
-			console.log("Show Primary School");
+	function getProximity(){
+		var proximity = document.getElementById("proximity").innerHTML.split('k')[0];
+		proximity = proximity/2;
+		return proximity;
+	}
 
-			const data = {
-		      method: 'POST',
-		      url: '/primarysch',
-		      data: {'test': 'Azman'}
-		    };
-
-		    $.ajax(data).done(res => {
-		      console.log(data);
-		      runPrimaryQuery();
-		    });
-		}
-	};
+	function getCoordinates(){
+		var coordinates = document.getElementById("currentlocation").value;
+		return coordinates;
+	}
 
 	// Execute primary school query and return it
 	function runPrimaryQuery() {
-		const data = {
-	      method: 'GET',
-	      url: '/primarysch',
-	      data : {'testget': 'Azman again'}
-	    };
-
-	    $.ajax(data).done(res => {
-	    	console.log(res);
-	    });
-	}
-
-	// Check if secondary school query is requested
-	function runSecondary() {
 		if (this.checked){
-			console.log("Show Secondary School");
-
 			const data = {
-		      method: 'POST',
-		      url: '/secondarysch',
-		      data: {'test': 'Throw some data here'}
+		      method: 'GET',
+		      url: '/primarysch',
+		      data: {'proximity': getProximity(), 'latitude': getCoordinates().split(' ')[0], 'longitude':getCoordinates().split(' ')[1]}
 		    };
 
 		    $.ajax(data).done(res => {
-		      console.log(data);
-		      runSecondaryQuery();
+		    	console.log(res);
+
+		      // Create custom icon
+		      var housingIcon = L.icon({
+		      iconUrl: 'js/images/pschool.svg',
+		      iconSize: [50, 50], // size of the icon
+		      popupAnchor: [0,-15]
+		      });
+		    
+		      // Specify popup options 
+		      var customOptions =
+		        {
+		        'maxWidth': '500',
+		        'className' : 'custom'
+		        }
+
+		      // Loop through contents of JSON query
+		      for (i=0; i<res.length;i++){
+		          L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['school_name']+"</b><p>"+res[i]['aid_type']+"<br>"+res[i]['street_name']+"<br>"+res[i]['url']+"<p>"),customOptions).addTo(pschoolGroup);
+		      }
 		    });
 		}
-	};
+	    pschoolGroup.clearLayers();
+	}
+
+	//Declare pop up content here
+	  function popupContents(string){
+	    return string;
+	}
 
 	// Execute secondary school query and return it
 	function runSecondaryQuery() {
-		const data = {
-	      method: 'GET',
-	      url: '/secondarysch',
-	      data : {'testget': 'Some query data thrown at us'}
-	    };
-
-	    $.ajax(data).done(res => {
-	    	console.log(res);
-	    });
-	}
-
-	// Check if combined school query is requested
-	function runCombined() {
 		if (this.checked){
-			console.log("Show Combined School");
-
 			const data = {
-		      method: 'POST',
-		      url: '/combinedsch',
-		      data: {'test': 'Throw some data here'}
+		      method: 'GET',
+		      url: '/secondarysch',
+		      data: {'proximity': getProximity(), 'latitude': getCoordinates().split(' ')[0], 'longitude':getCoordinates().split(' ')[1]}
 		    };
 
 		    $.ajax(data).done(res => {
-		      console.log(data);
-		      runCombinedQuery();
+		    	console.log(res);
+
+		    	// Create custom icon
+				var housingIcon = L.icon({
+				iconUrl: 'js/images/sschool.svg',
+				iconSize: [50, 50], // size of the icon
+				popupAnchor: [0,-15]
+				});
+
+				// Specify popup options 
+				var customOptions =
+				{
+				'maxWidth': '500',
+				'className' : 'custom'
+				}
+
+				// Loop through contents of JSON query
+				for (i=0; i<res.length;i++){
+				  L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['school_name']+"</b><p>"+res[i]['aid_type']+"<br>"+res[i]['street_name']+"<br>"+res[i]['url']+"<p>"),customOptions).addTo(sschoolGroup);
+				}
 		    });
 		}
-	};
+	    sschoolGroup.clearLayers();
+	}
 
 	// Execute combined school query and return it
 	function runCombinedQuery() {
-		const data = {
-	      method: 'GET',
-	      url: '/combinedsch',
-	      data : {'testget': 'Some query data thrown at us'}
-	    };
+		if (this.checked){
+			const data = {
+		      method: 'GET',
+		      url: '/combinedsch',
+		      data: {'proximity': getProximity(), 'latitude': getCoordinates().split(' ')[0], 'longitude':getCoordinates().split(' ')[1]}
+		    };
 
-	    $.ajax(data).done(res => {
-	    	console.log(res);
-	    });
+		    $.ajax(data).done(res => {
+		    	console.log(res);
+
+		    	// Create custom icon
+				var housingIcon = L.icon({
+				iconUrl: 'js/images/cschool.svg',
+				iconSize: [50, 50], // size of the icon
+				popupAnchor: [0,-15]
+				});
+
+				// Specify popup options 
+				var customOptions =
+				{
+				'maxWidth': '500',
+				'className' : 'custom'
+				}
+
+				// Loop through contents of JSON query
+				for (i=0; i<res.length;i++){
+				  L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['school_name']+"</b><p>"+res[i]['aid_type']+"<br>"+res[i]['street_name']+"<br>"+res[i]['url']+"<p>"),customOptions).addTo(cschoolGroup);
+				}
+		    });
+		}
+	    cschoolGroup.clearLayers();
 	}
 
 	// --------------Transport --------------- //
 
-	// Check if bus stops query is requested
-	function runBusstops() {
-		if (this.checked){
-			console.log("Show Bus Stops");
-
-			const data = {
-		      method: 'POST',
-		      url: '/busstops',
-		      data: {'test': 'Throw some data here'}
-		    };
-
-		    $.ajax(data).done(res => {
-		      console.log(data);
-		      runBusstopsQuery();
-		    });
-		}
-	};
-
 	// Execute bus stops query and return it
 	function runBusstopsQuery() {
-		const data = {
-	      method: 'GET',
-	      url: '/busstops',
-	      data : {'testget': 'Some query data thrown at us'}
-	    };
-
-	    $.ajax(data).done(res => {
-	    	console.log(res);
-	    });
-	}
-
-	// Check if mrt stations query is requested
-	function runMrtstations() {
 		if (this.checked){
-			console.log("Show MRT stations");
-
 			const data = {
-		      method: 'POST',
-		      url: '/mrtstations',
-		      data: {'test': 'Throw some data here'}
+		      method: 'GET',
+		      url: '/busstops',
+		      data: {'proximity': getProximity(), 'latitude': getCoordinates().split(' ')[0], 'longitude':getCoordinates().split(' ')[1]}
 		    };
 
 		    $.ajax(data).done(res => {
-		      console.log(data);
-		      runMrtstationsQuery();
+		    	console.log(res);
+
+		    	// Create custom icon
+				var housingIcon = L.icon({
+				iconUrl: 'js/images/bus.svg',
+				iconSize: [30, 30], // size of the icon
+				popupAnchor: [0,-15]
+				});
+
+				// Specify popup options 
+				var customOptions =
+				{
+				'maxWidth': '500',
+				'className' : 'custom'
+				}
+
+				// Loop through contents of JSON query
+				for (i=0; i<res.length;i++){
+				  L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['bs_name']+"</b><p>"+res[i]['bs_code']+"<br> Along "+res[i]['street_name']+"<p>"),customOptions).addTo(busGroup);
+				}
 		    });
 		}
-	};
-
-	// Execute mrt stations query and return it
-	function runMrtstationsQuery() {
-		const data = {
-	      method: 'GET',
-	      url: '/mrtstations',
-	      data : {'testget': 'Some query data thrown at us'}
-	    };
-
-	    $.ajax(data).done(res => {
-	    	console.log(res);
-	    });
+	    busGroup.clearLayers();
 	}
-
-	// Check if NPC query is requested
-	function runNpc() {
-		if (this.checked){
-			console.log("Show NPCs");
-
-			const data = {
-		      method: 'POST',
-		      url: '/npc',
-		      data: {'test': 'Throw some data here'}
-		    };
-
-		    $.ajax(data).done(res => {
-		      console.log(data);
-		      runNpcQuery();
-		    });
-		}
-	};
 
 	// Execute bus stops query and return it
 	function runNpcQuery() {
-		const data = {
-	      method: 'GET',
-	      url: '/npc',
-	      data : {'testget': 'Some query data thrown at us'}
-	    };
-
-	    $.ajax(data).done(res => {
-	    	console.log(res);
-	    });
-	}
-
-	// Check if NPP query is requested
-	function runNpp() {
 		if (this.checked){
-			console.log("Show NPPs");
-
 			const data = {
-		      method: 'POST',
-		      url: '/npp',
-		      data: {'test': 'Throw some data here'}
+		      method: 'GET',
+		      url: '/npc',
+		      data: {'proximity': getProximity(), 'latitude': getCoordinates().split(' ')[0], 'longitude':getCoordinates().split(' ')[1]}
 		    };
 
 		    $.ajax(data).done(res => {
-		      console.log(data);
-		      runNppQuery();
+		    	console.log(res);
+
+		    	// Create custom icon
+				var housingIcon = L.icon({
+				iconUrl: 'js/images/npc.svg',
+				iconSize: [30, 30], // size of the icon
+				popupAnchor: [0,-15]
+				});
+
+				// Specify popup options 
+				var customOptions =
+				{
+				'maxWidth': '500',
+				'className' : 'custom'
+				}
+
+				// Loop through contents of JSON query
+				for (i=0; i<res.length;i++){
+				  L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['npc_name']+"</b><p>"+res[i]['division_name']+"<br>Operating Hours: "+res[i]['operating_hours']+"<br> Along "+res[i]['street_name']+"<br> Contact: "+res[i]['telephone']+"<p>"),customOptions).addTo(npcGroup);
+				}
 		    });
 		}
-	};
+	    npcGroup.clearLayers();
+	}
 
 	// Execute NPP query and return it
 	function runNppQuery() {
-		const data = {
-	      method: 'GET',
-	      url: '/npp',
-	      data : {'testget': 'Some query data thrown at us'}
-	    };
-
-	    $.ajax(data).done(res => {
-	    	console.log(res);
-	    });
-	}
-
-	// Check if hawker query is requested
-	function runHawker() {
 		if (this.checked){
-			console.log("Show hawkerss");
-
 			const data = {
-		      method: 'POST',
-		      url: '/hawker',
-		      data: {'test': 'Throw some data here'}
+		      method: 'GET',
+		      url: '/npp',
+		      data: {'proximity': getProximity(), 'latitude': getCoordinates().split(' ')[0], 'longitude':getCoordinates().split(' ')[1]}
 		    };
 
 		    $.ajax(data).done(res => {
-		      console.log(data);
-		      runhawkerQuery();
+		    	console.log(res);
+
+		    	// Create custom icon
+				var housingIcon = L.icon({
+				iconUrl: 'js/images/npp.svg',
+				iconSize: [30, 30], // size of the icon
+				popupAnchor: [0,-15]
+				});
+
+				// Specify popup options 
+				var customOptions =
+				{
+				'maxWidth': '500',
+				'className' : 'custom'
+				}
+
+				// Loop through contents of JSON query
+				for (i=0; i<res.length;i++){
+				  L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['npc_name']+"</b><p>"+res[i]['division_name']+"<br>Operating Hours: "+res[i]['operating_hours']+"<br> Along "+res[i]['street_name']+"<br> Contact: "+res[i]['telephone']+"<p>"),customOptions).addTo(nppGroup);
+				}
 		    });
 		}
-	};
+	    nppGroup.clearLayers();
+	}
 
 	// Execute hawker query and return it
 	function runhawkerQuery() {
-		const data = {
-	      method: 'GET',
-	      url: '/hawker',
-	      data : {'testget': 'Some query data thrown at us'}
-	    };
+		if (this.checked){
+			const data = {
+		      method: 'GET',
+		      url: '/hawker',
+		      data: {'proximity': getProximity(), 'latitude': getCoordinates().split(' ')[0], 'longitude':getCoordinates().split(' ')[1]}
+		    };
 
-	    $.ajax(data).done(res => {
-	    	console.log(res);
-	    });
+		    $.ajax(data).done(res => {
+		    	console.log(res);
+
+		    	// Create custom icon
+				var housingIcon = L.icon({
+				iconUrl: 'js/images/hawker.svg',
+				iconSize: [30, 30], // size of the icon
+				popupAnchor: [0,-15]
+				});
+
+				// Specify popup options 
+				var customOptions =
+				{
+				'maxWidth': '500',
+				'className' : 'custom'
+				}
+
+				// Loop through contents of JSON query
+				for (i=0; i<res.length;i++){
+				  L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['hawker_name']+"</b><p> Along "+res[i]['street_name']+"</p>"),customOptions).addTo(hawkerGroup);
+				}
+		    });
+		}
+	    hawkerGroup.clearLayers();
 	}
-
-
 });
-
-
 
 console.log("Amenities AJAX assets loaded");

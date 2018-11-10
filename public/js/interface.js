@@ -65,11 +65,15 @@ profileButton.onclick = function(){
 	console.log("Profile show");
 };
 
-bookmarkButton.onclick = function(){
-	bookmarkModal.classList.toggle("clicked");
-	console.log("Bookmarks show");
-};
-
+try {
+	bookmarkButton.onclick = function(){
+		bookmarkModal.classList.toggle("clicked");
+		console.log("Bookmarks show");
+	};
+}
+catch(err) {
+	console.log("Bookmark not found")
+}
 
 closeModal.onclick = function(){
 	console.log("Close Modal");
@@ -84,3 +88,5 @@ zoomOut.onclick = function(){
 	map.setZoom(map.getZoom() - 1)
 	console.log("Zoom out by 1");
 };
+
+ 

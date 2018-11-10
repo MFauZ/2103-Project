@@ -1,7 +1,14 @@
 $(() => {
   const $form = $('#housingajax');
+  const $form2 = $('#bookmarkajax');
+
+  $("#checkAll").click(function () {
+    console.log('Selected all')
+    $('#housingajax input:checkbox').not(this).prop('checked', this.checked);
+  });
 
   $form.on('submit', runHousing);
+  $form2.on('submit', runBookmarks);
 
   // Get housing form data
   function runHousing(e) {
@@ -30,43 +37,66 @@ $(() => {
     $.ajax(data).done(res => {
       console.log(res);
 
-      performTask(res,50,function(items,index){
-      console.log(items[index]);
-
-      $('body').append('<a id="marker_' + index + '" href="#">Marker ' + index + '</a><br>');
-
-      // Mark the locations on map
-      markers.push(L.marker([items[index].latitude,items[index].longitude],{title:'marker_' + index + ''}).addTo(layerGroup).bindPopup(items[index].id));
+      // Create custom icon
+      var housingIcon = L.icon({
+      iconUrl: 'http://www.teoyusiang.com/buildingsingapore/bs/rainbowhdb.svg',
+      iconSize: [100, 100], // size of the icon
+      popupAnchor: [0,-15]
       });
+    
+      // Specify popup options 
+      var customOptions =
+        {
+        'maxWidth': '500',
+        'className' : 'custom'
+        }
+
+      // Loop through contents of JSON query
+      for (i=0; i<res.length;i++){
+          L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<p>"),customOptions).addTo(housingGroup);
+      }
+
     });
+
     //Clear map pins after being called
-    layerGroup.clearLayers();
+    housingGroup.clearLayers();
   };
 
-  function performTask(items, numToProcess, processItem) {
-    var pos = 0;
+  //Declare pop up content here
+  function popupContents(string){
+    return string;
+  }
 
-    // This is run once for every numToProcess items.
-    function iteration() {
+  // Get bookmark form data
+  function runBookmarks(e) {
 
-    // Calculate last position.
-    var j = Math.min(pos + numToProcess, items.length);
+    e.preventDefault();
 
-    // Start at current position and loop to last position.
-    for (var i = pos; i < j; i++) {
-      processItem(items, i);
-    }
+    const data = {
+      method: 'POST',
+      url: '/bookmark',
+      data: $form2.serialize()
+    };
 
-    // Increment current position.
-    pos += numToProcess;
-
-    // Only continue if there are more items to process.
-    if (pos < items.length)
-      setTimeout(iteration, 10); // Wait 10 ms to let the UI update.
-    }
-
-    iteration();
+    $.ajax(data).done(res => {
+      runBookmarksQuery(res.bookmarkname,res.postalcode);
+    });
   };
+
+   // Get SQL results and pin onto the map
+  function runBookmarksQuery(bookmarkname,postalcode) {
+
+    const data = {
+      method: 'GET',
+      url: '/bookmark',
+      data : {'bookmarkname': bookmarkname, 'postalcode': postalcode}
+    };
+
+    $.ajax(data).done(res => {
+      console.log(res);
+    });
+  };
+  
 });
 
 console.log("Housing AJAX assets loaded");
