@@ -18,6 +18,7 @@ busGroup = new L.LayerGroup().addTo(map);
 npcGroup = new L.LayerGroup().addTo(map);
 nppGroup = new L.LayerGroup().addTo(map);
 hawkerGroup = new L.LayerGroup().addTo(map);
+bookmarkGroup = new L.LayerGroup().addTo(map);
 map.removeControl(map.zoomControl); 							//Remove default map controls
 map.setMaxBounds([[1.48073, 104.1147], [1.16, 103.602]]); 		//Set map boundaries
 

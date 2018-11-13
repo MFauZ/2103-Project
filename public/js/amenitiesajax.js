@@ -287,6 +287,7 @@ $(() => {
 		}
 	    hawkerGroup.clearLayers();
 	}
+
 });
 
 console.log("Amenities AJAX assets loaded");

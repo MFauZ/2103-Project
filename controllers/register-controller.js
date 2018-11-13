@@ -18,11 +18,7 @@ module.exports.register=function(req,res){
             message: error
         })
       }else{
-          res.json({
-            status:true,
-            data:results,
-            message:'user registered sucessfully'
-        })
+        res.redirect('/');
       }
     });
 }

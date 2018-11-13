@@ -89,4 +89,6 @@ zoomOut.onclick = function(){
 	console.log("Zoom out by 1");
 };
 
+
+
  

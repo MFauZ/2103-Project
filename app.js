@@ -94,7 +94,9 @@ app.get('/housing', (req, res) => {
 
     room = "(" + room + ")";
 
-    let housingQuery = "SELECT Distinct longitude, latitude, block, year, floors FROM group8.housing WHERE  locale_name LIKE " + "'%" + locale + "%'" + " AND year > "+ syear +" AND year < "+ eyear +" AND room_id in "+room+";";
+    //let housingQuery = "SELECT Distinct longitude, latitude, block, year, floors FROM group8.housing WHERE  locale_name LIKE " + "'%" + locale + "%'" + " AND year > "+ syear +" AND year < "+ eyear +" AND room_id in "+room+";";
+
+    let housingQuery = "SELECT Distinct longitude, latitude, housing.id, block, year, floors, GROUP_CONCAT(room.room_type) As Rooms FROM housing JOIN room on housing.room_id = room.id WHERE locale_name LIKE " + "'%" + locale + "%'" + " AND year > "+ syear +" AND year < "+ eyear +" AND room_id in "+room+"GROUP BY longitude, latitude;"
 
     let query = db.query(housingQuery,(err,results) => {
         if (err) throw err;
@@ -215,30 +217,59 @@ app.get('/hawker', (req, res) => {
     });
 });
 
-//Route for bookmarks for GET request to use on the SQL query
+
 app.post('/bookmark', (req, res) => {
 
-  const bookmarkResults = {
-    bookmarkname: req.body.bookmarkname,
-    postalcode: req.body.postalcode,
-  }
+  var locationId = req.body.location;
+  var block = req.body.block;
 
-  //let bookmarkQuery = "INSERT INTO user_bookmarks_location (uid,lid,bookmarkname)";
-  res.send(bookmarkResults);
+  //console.log(block);
+
+  let bookmarkQuery = "INSERT INTO user_bookmarks_location (uid, lid, bookmark_name) VALUES ((SELECT id FROM User WHERE username = '"+globalusername+"' LIMIT 1), "+ locationId+", '"+block+"');";
+
+  let query = db.query(bookmarkQuery,(err,results) => {
+        if (err) throw err;
+        res.send(results);
+  });
+
 });
 
-//Route for bookmark for GET request to use on the SQL query
+// //Route for bookmark for GET request to use on the SQL query
 app.get('/bookmark', (req, res) => {
-    var bookmarkname = req.query.bookmarkname;
-    var postalcode = req.query.postalcode;
 
-    console.log(bookmarkname);
+    let bookmarkQuery = "SELECT ub.* FROM user_bookmarks_location ub, user u WHERE u.id = ub.uid AND u.username = '"+globalusername+"'";
 
-    let bookmarkQuery = "SELECT * FROM user_bookmarks_location;";
+    let query = db.query(bookmarkQuery,(err,results) => {
+        if (err) throw err;
+        res.send({'bookmarks':results});
+    });
+});
+
+// //Route for bookmark for GET request to use on the SQL query
+app.get('/showbookmark', (req, res) => {
+
+    var locationId = req.query.lid;
+
+    console.log(locationId);
+
+    let bookmarkQuery = "SELECT latitude, longitude FROM location L WHERE L.id ="+locationId+"";
 
     let query = db.query(bookmarkQuery,(err,results) => {
         if (err) throw err;
         res.send(results);
+    });
+});
+
+// //Route for bookmark for GET request to use on the SQL query
+app.delete('/bookmark', (req, res) => {
+
+    bookmarkId = req.body.bid;
+
+    let bookmarkQuery = "DELETE FROM user_bookmarks_location WHERE bookmark_name = '"+bookmarkId+"'";
+
+    let query = db.query(bookmarkQuery,(err,results) => {
+        if (err) throw err;
+        res.send('Bookmark deleted!');
     });
 });
 

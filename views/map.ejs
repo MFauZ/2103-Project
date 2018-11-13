@@ -27,7 +27,7 @@
 	<!--Include all Google API dependencies here-->
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9887gzzndnzrP4E-bJkEmqESDRTW3GKw&libraries=places"></script>
 	
-
+	
 </head>
 
 <body style="margin: 0; background: #6da8e4;">
@@ -78,6 +78,7 @@
 						<option value="Jurong">Jurong</option>
 						<option value="Kranji">Kranji</option>
 						<option value="Punggol">Punggol</option>
+						<option value="Sembawang">Sembawang</option>
 						<option value="Tampines">Tampines</option>
 						<option value="Tanjong Pagar">Tanjong Pagar</option>
 						<option value="Toa Payoh">Toa Payoh</option>
@@ -157,10 +158,6 @@
 					<input class="form-check-input" type="checkbox" id="busstops" value="option6">
 					<label class="form-check-label" for="busstops">Bus-stops</label>
 				</div>
-				<div class="form-check form-check-inline">
-					<input class="form-check-input" type="checkbox" id="mrtstations" value="option7">
-					<label class="form-check-label" for="mrtstations">MRT stations</label>
-				</div>
 				<br><br>
 				<h2>Police Stations:</h2>
 				<div class="form-check form-check-inline">
@@ -193,22 +190,18 @@
 			<h1>Bookmarks</h1>
 			<p>View your residential bookmarks here.</p>
 
-			<form id="bookmarkajax" method="POST" action="/bookmark">
-				<div class="locale">
-					<h2>Bookmark name</h2>
-					<input type="text" name="bookmarkname" class="form-control" placeholder="eg. mybookmark" id="bookmarkname" required>
-				</div>
-				<br>
-
-				<h2>Location</h2>
-				<input type="text" name="postalcode" class="form-control" placeholder="eg. 618432" id="postalcode" maxlength="6" required>
-				<br>
-
-				
-				<button type="submit" value="Submit" class="btn search">Add bookmark</button>
-				<button type="submit" value="Submit" class="btn search">View my bookmarks</button>
-				<!-- <button type="button" class="btn search" value="Submit" onclick="showResidential();">Search</button> -->
-			</form>
+			<table id="bookmarkTable" style="width:100%">
+				<thead>
+					<tr>
+						<th>Block</th>
+						<th></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
+			</table>
 
 		</div>
 
@@ -253,5 +246,6 @@
 <script src="js/map.js"></script>	
 <script type="text/javascript" src="js/interface.js"></script>
 <script src="js/housingajax.js"></script>		
-<script src="js/amenitiesajax.js"></script>		
+<script src="js/amenitiesajax.js"></script>
+<script src="js/bookmarkajax.js"></script>		
 </html>

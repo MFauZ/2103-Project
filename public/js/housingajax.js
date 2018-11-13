@@ -1,6 +1,8 @@
 $(() => {
+
+  var pathname = window.location.pathname;
+
   const $form = $('#housingajax');
-  const $form2 = $('#bookmarkajax');
 
   $("#checkAll").click(function () {
     console.log('Selected all')
@@ -8,7 +10,6 @@ $(() => {
   });
 
   $form.on('submit', runHousing);
-  $form2.on('submit', runBookmarks);
 
   // Get housing form data
   function runHousing(e) {
@@ -21,6 +22,7 @@ $(() => {
     };
 
     $.ajax(data).done(res => {
+      console.log(res);
       runHousingQuery(res.locale,res.year,res.room);
     });
   };
@@ -51,9 +53,17 @@ $(() => {
         'className' : 'custom'
         }
 
-      // Loop through contents of JSON query
-      for (i=0; i<res.length;i++){
-          L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<p>"),customOptions).addTo(housingGroup);
+      if (pathname =='/'){
+        // Loop through contents of JSON query (Not login)
+        for (i=0; i<res.length;i++){
+            L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<br>Room types:"+res[i]['Rooms']+"</p>"),customOptions).addTo(housingGroup);
+        }
+      }
+      else{
+        // Loop through contents of JSON query (User login)
+        for (i=0; i<res.length;i++){
+            L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<br>Room types:"+res[i]['Rooms']+"</p>"+"<button class='btn search' id='bookmarkbtn' value='"+res[i]['id']+","+res[i]['block']+"' onClick='runBookmarks(this.value)'>Bookmark this flat</button>"),customOptions).addTo(housingGroup);
+        }
       }
 
     });
@@ -65,38 +75,8 @@ $(() => {
   //Declare pop up content here
   function popupContents(string){
     return string;
-  }
-
-  // Get bookmark form data
-  function runBookmarks(e) {
-
-    e.preventDefault();
-
-    const data = {
-      method: 'POST',
-      url: '/bookmark',
-      data: $form2.serialize()
-    };
-
-    $.ajax(data).done(res => {
-      runBookmarksQuery(res.bookmarkname,res.postalcode);
-    });
   };
 
-   // Get SQL results and pin onto the map
-  function runBookmarksQuery(bookmarkname,postalcode) {
-
-    const data = {
-      method: 'GET',
-      url: '/bookmark',
-      data : {'bookmarkname': bookmarkname, 'postalcode': postalcode}
-    };
-
-    $.ajax(data).done(res => {
-      console.log(res);
-    });
-  };
-  
 });
 
 console.log("Housing AJAX assets loaded");
