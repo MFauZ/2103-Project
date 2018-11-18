@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"blackhole.hawker"},{"v":2,"unique":true,"key":{"postal_code":1.0},"name":"postal_code_1","ns":"blackhole.hawker"}],"uuid":"eef7109063874505a7c0e547f82a737e"}
