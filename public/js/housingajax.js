@@ -17,7 +17,7 @@ $(() => {
 
     const data = {
       method: 'POST',
-      url: '/housing',
+      url: '/residential',
       data: $form.serialize()
     };
 
@@ -32,7 +32,7 @@ $(() => {
 
     const data = {
       method: 'GET',
-      url: '/housing',
+      url: '/residential',
       data : {'locale': locale,'year': year,'room': room}
     };
 
@@ -56,13 +56,13 @@ $(() => {
       if (pathname =='/'){
         // Loop through contents of JSON query (Not login)
         for (i=0; i<res.length;i++){
-            L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<br>Room types:"+res[i]['Rooms']+"</p>"),customOptions).addTo(housingGroup);
+            L.marker([res[i]['location']['coordinates'][1], res[i]['location']['coordinates'][0]], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<br>Room types:"+res[i]['Rooms']+"</p>"),customOptions).addTo(housingGroup);
         }
       }
       else{
         // Loop through contents of JSON query (User login)
         for (i=0; i<res.length;i++){
-            L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<br>Room types:"+res[i]['Rooms']+"</p>"+"<button class='btn search' id='bookmarkbtn' value='"+res[i]['id']+","+res[i]['block']+"' onClick='runBookmarks(this.value)'>Bookmark this flat</button>"),customOptions).addTo(housingGroup);
+            L.marker([res[i]['location']['coordinates'][1], res[i]['location']['coordinates'][0]], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<br>Room types:"+res[i]['Rooms']+"</p>"+"<button class='btn search' id='bookmarkbtn' value='"+res[i]['id']+","+res[i]['block']+"' onClick='runBookmarks(this.value)'>Bookmark this flat</button>"),customOptions).addTo(housingGroup);
         }
       }
 
