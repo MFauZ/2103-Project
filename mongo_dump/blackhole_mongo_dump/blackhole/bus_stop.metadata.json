@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"blackhole.bus_stop"},{"v":2,"unique":true,"key":{"bs_code":1.0},"name":"bs_code_1","ns":"blackhole.bus_stop"}],"uuid":"cfe6151c2722433b9ad4f7ffdb837bda"}

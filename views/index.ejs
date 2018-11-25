@@ -180,8 +180,51 @@
 		<div id="grantModal" class="sideModal">
 			<div class="closeModal">X</div>
 			<div class="bar"></div>
-			<h1>Grant</h1>
-			<p>Filter any HDB houses in Singapore catered to your needs.</p>
+			<h1>Housing value</h1>
+			<p>Enter the postal code of the flat and it will estimate the current value of the flat.</p>
+			<form id="grantajax">
+				<h2>Locale:</h2>
+					<select class="custom-select" name="locale">
+						<option selected value="Ang Mo Kio">Ang Mo Kio</option>
+						<option value="Balestier">Balestier</option>
+						<option value="Panjang">Bukit Panjang</option>
+						<option value="Timah">Bukit Timah</option>
+						<option value="Choa">Choa Chu Kang</option>
+						<option value="Eunos">Eunos</option>
+						<option value="Geylang">Geylang</option>
+						<option value="Holland">Holland</option>
+						<option value="Hougang">Hougang</option>
+						<option value="Jurong">Jurong</option>
+						<option value="Kranji">Kranji</option>
+						<option value="Punggol">Punggol</option>
+						<option value="Tampines">Tampines</option>
+						<option value="Tanjong Pagar">Tanjong Pagar</option>
+						<option value="Toa Payoh">Toa Payoh</option>
+					</select>
+				<h2>Floors:</h2>
+				<div class="form-group">
+		            <input type="number" name="floors" class="form-control" id="floors" placeholder="Floors"  min="1" max="50">
+		        </div>
+		        <h2>Years</h2>
+		        <select class="custom-select" name="year">
+					<option selected value="1930-2018">Any</option>
+					<option value="2001-2018">After 2000</option>
+					<option value="1990-2000">1990-2000</option>
+					<option value="1930-1989">Before 1990</option>
+				</select>
+				<h2>Rooms:</h2>
+				<select class="custom-select" id="room" name="room">
+						<option selected value="1">1 Room</option>
+						<option value="2">2 Room</option>
+						<option value="3">3 Room</option>
+						<option value="4">4 Room</option>
+						<option value="5">5 Room</option>
+						<option value="6">Executive</option>
+					</select>
+		        <button type="submit" class="btn search" value="Submit">Estimate</button>
+		        <br><br><br>
+		        <h2>Estimated Price:<br> <span id="proximity" style="color: #F53240; font-size: 25px">$422,000.00</span></h2>
+			</form>
 		</div>
 
 		<div id="profileModal" class="sideModal">
