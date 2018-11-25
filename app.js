@@ -87,8 +87,8 @@ app.post('/housing', (req, res) => {
     locale: req.body.locale,
     year: req.body.year,
     room: req.body.roomtype
-  }
-  res.send(housingResults);
+}
+res.send(housingResults);
 });
 
 
@@ -128,9 +128,9 @@ app.get('/housing', (req, res) => {
 var primarySchema = new Schema({
     level: String,
     location: {
-       type: { type: String },
-       coordinates: []
-      },
+     type: { type: String },
+     coordinates: []
+ },
 }, {collection:"school"});
 
 primarySchema.index({ location: "2dsphere" });
@@ -147,19 +147,19 @@ app.get('/primarysch', (req, res) => {
     primaryModel.find({
         level: "PRIMARY",
         location: {
-           $near: {
-                $maxDistance: 2000 * proximity,
-                $geometry: {
-                    type: "Point",
-                    coordinates: [longitude, latitude]
-                }
+         $near: {
+            $maxDistance: 2000 * proximity,
+            $geometry: {
+                type: "Point",
+                coordinates: [longitude, latitude]
             }
         }
-    }, function(err,result){
-        if (err) throw err;
-        console.log(result);
-        res.send(result);
-    });
+    }
+}, function(err,result){
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+});
 });
 
 //Route for secondary school for GET request to use on the SQL query
@@ -167,9 +167,9 @@ app.get('/primarysch', (req, res) => {
 var secondarySchema = new Schema({
     level: String,
     location: {
-       type: { type: String },
-       coordinates: []
-      },
+     type: { type: String },
+     coordinates: []
+ },
 }, {collection:"school"});
 
 secondarySchema.index({ location: "2dsphere" });
@@ -186,19 +186,19 @@ app.get('/secondarysch', (req, res) => {
     secondaryModel.find({
         level: "SECONDARY",
         location: {
-           $near: {
-                $maxDistance: 2000 * proximity,
-                $geometry: {
-                    type: "Point",
-                    coordinates: [longitude, latitude]
-                }
+         $near: {
+            $maxDistance: 2000 * proximity,
+            $geometry: {
+                type: "Point",
+                coordinates: [longitude, latitude]
             }
         }
-    }, function(err,result){
-        if (err) throw err;
-        console.log(result);
-        res.send(result);
-    });
+    }
+}, function(err,result){
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+});
 });
 
 //Route for secondary school for GET request to use on the SQL query
@@ -206,9 +206,9 @@ app.get('/secondarysch', (req, res) => {
 var combinedSchema = new Schema({
     level: String,
     location: {
-       type: { type: String },
-       coordinates: []
-      },
+     type: { type: String },
+     coordinates: []
+ },
 }, {collection:"school"});
 
 combinedSchema.index({ location: "2dsphere" });
@@ -225,20 +225,176 @@ app.get('/combinedsch', (req, res) => {
     combinedModel.find({
         level: {$nin : ["PRIMARY", "SECONDARY"]},
         location: {
-           $near: {
-                $maxDistance: 2000 * proximity,
-                $geometry: {
-                    type: "Point",
-                    coordinates: [longitude, latitude]
-                }
+         $near: {
+            $maxDistance: 2000 * proximity,
+            $geometry: {
+                type: "Point",
+                coordinates: [longitude, latitude]
             }
         }
-    }, function(err,result){
-        if (err) throw err;
-        console.log(result);
-        res.send(result);
-    });
+    }
+}, function(err,result){
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
 });
+});
+
+
+//Route for hawker for GET request to use on the noSQL query
+
+var hawkerSchema = new Schema({    
+    location: {
+     type: { type: String },
+     coordinates: []
+ },
+}, {collection:"hawker"});
+
+hawkerSchema.index({ location: "2dsphere" });
+
+var hawkerModel = mongoose.model('hawkerModel', hawkerSchema);
+
+app.get('/hawker', (req, res) => {
+    var proximity = req.query.proximity;
+    var latitude = req.query.latitude;
+    var longitude = req.query.longitude;
+
+    console.log(proximity);
+
+    hawkerModel.find({
+        location: {
+         $near: {
+            $maxDistance: 2000 * proximity,
+            $geometry: {
+                type: "Point",
+                coordinates: [longitude, latitude]
+            }
+        }
+    }
+}, function(err,result){
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+});
+});
+
+
+//Route for bus stops for GET request to use on the noSQL query
+
+var bus_stopSchema = new Schema({
+    location: {
+     type: { type: String },
+     coordinates: []
+ },
+}, {collection:"bus_stop"});
+
+bus_stopSchema.index({ location: "2dsphere" });
+
+var bus_stopModel = mongoose.model('bus_stopModel', bus_stopSchema);
+
+app.get('/busstops', (req, res) => {
+    var proximity = req.query.proximity;
+    var latitude = req.query.latitude;
+    var longitude = req.query.longitude;
+
+    console.log(proximity);
+
+    bus_stopModel.find({
+        location: {
+         $near: {
+            $maxDistance: 2000 * proximity,
+            $geometry: {
+                type: "Point",
+                coordinates: [longitude, latitude]
+            }
+        }
+    }
+}, function(err,result){
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+});
+});
+
+//Route for NPC for GET request to use on the noSQL query
+
+var npcSchema = new Schema({
+    npc_name: String,
+    location: {
+     type: { type: String },
+     coordinates: []
+ },
+}, {collection:"NPC"});
+
+npcSchema.index({ location: "2dsphere" });
+
+var npcModel = mongoose.model('npcModel', npcSchema);
+
+app.get('/npc', (req, res) => {
+    var proximity = req.query.proximity;
+    var latitude = req.query.latitude;
+    var longitude = req.query.longitude;
+
+    console.log(proximity);
+
+    npcModel.find({
+        npc_name: {$regex: /Police Centre/},
+        location: {
+         $near: {
+            $maxDistance: 2000 * proximity,
+            $geometry: {
+                type: "Point",
+                coordinates: [longitude, latitude]
+            }
+        }
+    }
+}, function(err,result){
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+});
+});
+
+//Route for NPP for GET request to use on the noSQL query
+
+var nppSchema = new Schema({
+    npc_name: String,
+    location: {
+     type: { type: String },
+     coordinates: []
+ },
+}, {collection:"NPC"});
+
+nppSchema.index({ location: "2dsphere" });
+
+var nppModel = mongoose.model('nppModel', nppSchema);
+
+app.get('/npp', (req, res) => {
+    var proximity = req.query.proximity;
+    var latitude = req.query.latitude;
+    var longitude = req.query.longitude;
+
+    console.log(proximity);
+
+    nppModel.find({
+        npc_name: {$regex: /Police Post/},
+        location: {
+         $near: {
+            $maxDistance: 2000 * proximity,
+            $geometry: {
+                type: "Point",
+                coordinates: [longitude, latitude]
+            }
+        }
+    }
+}, function(err,result){
+    if (err) throw err;
+    console.log(result);
+    res.send(result);
+});
+});
+
+
 
 
 
