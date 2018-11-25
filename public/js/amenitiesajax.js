@@ -64,7 +64,7 @@ $(() => {
 
 		      // Loop through contents of JSON query
 		      for (i=0; i<res.length;i++){
-		          L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['school_name']+"</b><p>"+res[i]['aid_type']+"<br>"+res[i]['street_name']+"<br>"+res[i]['url']+"<p>"),customOptions).addTo(pschoolGroup);
+		          L.marker([res[i]['location']['coordinates']['1'], res[i]['location']['coordinates']['0']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['school_name']+"</b><p>"+res[i]['aid_type']+"<br>"+res[i]['street_name']+"<br>"+res[i]['url']+"<p>"),customOptions).addTo(pschoolGroup);
 		      }
 		    });
 		}
@@ -104,7 +104,7 @@ $(() => {
 
 				// Loop through contents of JSON query
 				for (i=0; i<res.length;i++){
-				  L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['school_name']+"</b><p>"+res[i]['aid_type']+"<br>"+res[i]['street_name']+"<br>"+res[i]['url']+"<p>"),customOptions).addTo(sschoolGroup);
+				  L.marker([res[i]['location']['coordinates']['1'], res[i]['location']['coordinates']['0']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['school_name']+"</b><p>"+res[i]['aid_type']+"<br>"+res[i]['street_name']+"<br>"+res[i]['url']+"<p>"),customOptions).addTo(sschoolGroup);
 				}
 		    });
 		}
@@ -139,7 +139,7 @@ $(() => {
 
 				// Loop through contents of JSON query
 				for (i=0; i<res.length;i++){
-				  L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['school_name']+"</b><p>"+res[i]['aid_type']+"<br>"+res[i]['street_name']+"<br>"+res[i]['url']+"<p>"),customOptions).addTo(cschoolGroup);
+				  L.marker([res[i]['location']['coordinates']['1'], res[i]['location']['coordinates']['0']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['school_name']+"</b><p>"+res[i]['aid_type']+"<br>"+res[i]['street_name']+"<br>"+res[i]['url']+"<p>"),customOptions).addTo(cschoolGroup);
 				}
 		    });
 		}

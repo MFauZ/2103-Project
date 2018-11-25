@@ -17,7 +17,7 @@ $(() => {
 
     const data = {
       method: 'POST',
-      url: '/residential',
+      url: '/housing',
       data: $form.serialize()
     };
 
@@ -32,7 +32,7 @@ $(() => {
 
     const data = {
       method: 'GET',
-      url: '/residential',
+      url: '/housing',
       data : {'locale': locale,'year': year,'room': room}
     };
 
