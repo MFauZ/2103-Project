@@ -139,7 +139,7 @@ $(() => {
 
 				// Loop through contents of JSON query
 				for (i=0; i<res.length;i++){
-				  L.marker([res[i]['location']['coordinates']['1'], res[i]['location']['coordinates']['0']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['school_name']+"</b><p>"+res[i]['aid_type']+"<br>"+res[i]['street_name']+"<br>"+res[i]['url']+"<p>"),customOptions).addTo(cschoolGroup);
+				  L.marker([res[i]['location']['coordinates']['1'], res[i]['location']['coordinates']['0']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['school_name']+"</b><p>"+res[i]['aid_type']+"<br>"+res[i]['street']+"<br>"+res[i]['url']+"<p>"),customOptions).addTo(cschoolGroup);
 				}
 		    });
 		}
@@ -176,7 +176,7 @@ $(() => {
 
 				// Loop through contents of JSON query
 				for (i=0; i<res.length;i++){
-				  L.marker([res[i]['location']['coordinates']['1'], res[i]['location']['coordinates']['0']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['bs_name']+"</b><p>"+res[i]['bs_code']+"<br> Along "+res[i]['street_name']+"<p>"),customOptions).addTo(busGroup);
+				  L.marker([res[i]['location']['coordinates']['1'], res[i]['location']['coordinates']['0']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['bs_name']+"</b><p>"+res[i]['bs_code']+"<br> Along "+res[i]['street']+"<p>"),customOptions).addTo(busGroup);
 				}
 		    });
 		}
@@ -211,7 +211,7 @@ $(() => {
 
 				// Loop through contents of JSON query
 				for (i=0; i<res.length;i++){
-				  L.marker([res[i]['location']['coordinates']['1'], res[i]['location']['coordinates']['0']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['npc_name']+"</b><p>"+res[i]['division_name']+"<br>Operating Hours: "+res[i]['operating_hours']+"<br> Along "+res[i]['street_name']+"<br> Contact: "+res[i]['telephone']+"<p>"),customOptions).addTo(npcGroup);
+				  L.marker([res[i]['location']['coordinates']['1'], res[i]['location']['coordinates']['0']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['npc_name']+"</b><p>"+res[i]['division_name']+"<br>Operating Hours: "+res[i]['operating_hours']+"<br> Along "+res[i]['street']+"<br> Contact: "+res[i]['telephone']+"<p>"),customOptions).addTo(npcGroup);
 				}
 		    });
 		}
@@ -246,7 +246,7 @@ $(() => {
 
 				// Loop through contents of JSON query
 				for (i=0; i<res.length;i++){
-				  L.marker([res[i]['location']['coordinates']['1'],res[i]['location']['coordinates']['0']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['npc_name']+"</b><p>"+res[i]['division_name']+"<br>Operating Hours: "+res[i]['operating_hours']+"<br> Along "+res[i]['street_name']+"<br> Contact: "+res[i]['telephone']+"<p>"),customOptions).addTo(nppGroup);
+				  L.marker([res[i]['location']['coordinates']['1'],res[i]['location']['coordinates']['0']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['npc_name']+"</b><p>"+res[i]['division_name']+"<br>Operating Hours: "+res[i]['operating_hours']+"<br> Along "+res[i]['street']+"<br> Contact: "+res[i]['telephone']+"<p>"),customOptions).addTo(nppGroup);
 				}
 		    });
 		}
@@ -282,7 +282,7 @@ $(() => {
 
 				// Loop through contents of JSON query
 				for (i=0; i<res.length;i++){
-				  L.marker([res[i]['location']['coordinates']['1'], res[i]['location']['coordinates']['0']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['hawker_name']+"</b><p> Along "+res[i]['street_name']+"</p>"),customOptions).addTo(hawkerGroup);
+				  L.marker([res[i]['location']['coordinates']['1'], res[i]['location']['coordinates']['0']], {icon: housingIcon}).bindPopup(popupContents("<b>"+res[i]['hawker_name']+"</b><p> Along "+res[i]['street']+"</p>"),customOptions).addTo(hawkerGroup);
 				}
 		    });
 		}

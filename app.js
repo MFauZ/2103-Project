@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 globalusername = ""
+cryptr = new Cryptr('myTotalySecretKey');
 
 //Open connection for Mongoose here
 mongoose.connect('mongodb://localhost:27017/blackhole', function (err) {
@@ -38,44 +39,89 @@ app.use(function(req, res, next){
 
 // //Route to render homepage
 app.get('/', function (req, res){
-    var loginStatus = Boolean(req.query.fail);
-    if (loginStatus == true){
-        res.render('index',{
-            errorMessage : "You suck"
-        });
-    }
-    else{
-        res.render('index');
-    }
+    res.render('index');
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////// -Login Modal -//////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
 
-//Route to get session ID if valid (Token is username encrypted)
-app.get('/session', function (req, res) {
-    var username = cryptr.decrypt(req.query.valid);
-    globalusername = username;
-    console.log("User currently logged in:" + username)
-    console.log("Global:" + globalusername)
-    res.render('map',{
-        user : username
+//Route for register for POST request from the form
+
+var registerSchema = new Schema({
+    email: String,
+    username: String,
+    password: String,
+    created_time: Date
+
+}, {collection:"user"});
+
+var registerModel = mongoose.model('registerModel', registerSchema);
+
+app.post('/register', (req, res) => {
+    var remail = req.body.email;
+    var rusername = req.body.username;
+    var rpassword = cryptr.encrypt(req.body.password);
+    var rtime = new Date();
+
+    var registerData = new registerModel({
+        email: remail,
+        username: rusername,
+        password: rpassword,
+        created_time: rtime
+    });
+
+    registerData.save(function(err,result) {
+        res.send(result);
+        console.log("Registration Successfully");
+        if (err) {
+            console.error(err);
+        }
     });
 });
 
-//Route to render homepage
-app.get('/logout', function (req, res) {
-    res.sendFile(path.join(__dirname+"/index.html"));
+//Route for login for POST request from the form
+
+var loginSchema = new Schema({
+    email: String,
+    username: String,
+    password: String
+
+}, {collection:"user"});
+
+var loginModel = mongoose.model('loginModel', loginSchema);
+
+app.post('/login', (req, res) => {
+    var lemail = req.body.email;
+    var lpassword = cryptr.encrypt(req.body.password);
+
+    loginModel.find({
+        email: lemail
+
+    }, function(err,result){
+        if (err){
+            throw err;
+        } 
+        else{
+            currentPassword = cryptr.decrypt(lpassword);
+            savedPassword = cryptr.decrypt(result[0]['password']);
+            if (currentPassword == savedPassword){
+                globalusername = result[0]['username'];
+                res.redirect('/session?valid=' + lpassword);
+            }
+            else{
+                console.log("Invalid credentials");
+            }
+        }  
+    });
 });
 
-//Route for login and registration
-var authenticateController=require(__dirname + "/controllers/authenticate-controller");
-var registerController=require(__dirname + "/controllers/register-controller");
-app.post('/api/register',registerController.register);
-app.post('/api/authenticate',authenticateController.authenticate);
-app.post('/controllers/register-controller', registerController.register);
-app.post('/controllers/authenticate-controller', authenticateController.authenticate);
+//Route to get session ID if valid (Token is username encrypted)
+app.get('/session', function (req, res) {
+    res.render('map',{
+        user : globalusername
+    });
+});
 
 ////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////// -Housing Modal -////////////////////////////////////////
@@ -393,9 +439,6 @@ app.get('/npp', (req, res) => {
     res.send(result);
 });
 });
-
-
-
 
 
 // Defne which port to run local server
