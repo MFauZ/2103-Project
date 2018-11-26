@@ -3,11 +3,12 @@ function runBookmarks(bookmarkdata) {
 
 	var location = bookmarkdata.split(',')[0];
 	var block = bookmarkdata.split(',')[1];
+	var postal_code = bookmarkdata.split(',')[2];
 
 	const data = {
 	  method: 'POST',
 	  url: '/bookmark',
-	  data: {'location': location, 'block': block}
+	  data: {'location': location, 'block': block, 'postal_code': postal_code}
 	};
 
 	$.ajax(data).done(res => {
@@ -21,57 +22,49 @@ function runBookmarksQuery() {
 
   const data = {
     method: 'GET',
-    url: '/bookmark',
-    data : {'wow': 'wow'}
+    url: '/bookmark'
   };
 
   $.ajax(data).done(res => {
+
     console.log(res);
 
     var tableBody = $('#bookmarkTable tbody');
 
     tableBody.html('');
 
-    res.bookmarks.forEach(function(bookmark){
-    	tableBody.append('<tr><td>'+bookmark.bookmark_name+'</td><td><button class="btn search" value='+bookmark.lid+' onClick="showBookmark(this.value)">Show</button></td><td><button class="btn search deleteBtn" value='+bookmark.bookmark_name+' onClick="deleteBookmark(this.value)">Delete</button></td></tr>');
-    });
+    for (var i=0; i< res.length; i++){
+    	var block = res[i]['bookmark_details'][0]['block'];
+    	var postal = res[i]['bookmark_details'][0]['postal_code'];
+    	var location = res[i]['bookmark_details'][0]['location']['coordinates'];
+    	tableBody.append('<tr><td>'+block+'</td><td><button class="btn search" value='+location+' onClick="showBookmark(this.value)">Show</button></td><td><button class="btn search deleteBtn" value='+postal+' onClick="deleteBookmark(this.value)">Delete</button></td></tr>');
+    }
   });
-
 };
 
 // Show bookmarks list
 function showBookmark(lid) {
 
-	const data = {
-	    method: 'GET',
-	    url: '/showbookmark',
-	    data : {'lid':lid}
- 	 };
-
-	$.ajax(data).done(res => {
-	  console.log(res);
-
-	  // Create custom icon
-      var housingIcon = L.icon({
-      iconUrl: 'js/images/bookmark.svg',
-      iconSize: [50, 50], // size of the icon
-      popupAnchor: [0,-15]
-      });
-
-      var customPopup = "<img src='http://joshuafrazier.info/images/maptime.gif' alt='maptime logo gif' width='350px'/>";
-    
-      // Specify popup options 
-      var customOptions =
-        {
-        'maxWidth': '500',
-        'className' : 'custom'
-        }
-
-      // Loop through contents of JSON query
-      L.marker([res[0]['latitude'], res[0]['longitude']], {icon: housingIcon}).bindPopup(customPopup,customOptions).addTo(bookmarkGroup);
-      
-
+	//Create custom icon
+	var housingIcon = L.icon({
+		iconUrl: 'js/images/bookmark.svg',
+		iconSize: [50, 50], // size of the icon
+		popupAnchor: [0,-15]
 	});
+
+	var customPopup = "<img src='http://joshuafrazier.info/images/maptime.gif' alt='maptime logo gif' width='350px'/>";
+
+	// Specify popup options 
+	var customOptions =
+	{
+	'maxWidth': '500',
+	'className' : 'custom'
+	}
+
+	var longitude = lid.split(',')[0];
+	var latitude = lid.split(',')[1];
+
+	L.marker([latitude, longitude], {icon: housingIcon}).bindPopup(customPopup,customOptions).addTo(bookmarkGroup);
 };
 
 // Delete bookmark

@@ -16,10 +16,9 @@ $(() => {
 
     $.ajax(data).done(res => {
       console.log(res);
-      runHousingQuery(res.locale,res.year,res.room);
     });
   };
 });
 
-console.log("Housing AJAX assets loaded");
+console.log("Register AJAX assets loaded");
 

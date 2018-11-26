@@ -62,7 +62,7 @@ $(() => {
       else{
         // Loop through contents of JSON query (User login)
         for (i=0; i<res.length;i++){
-            L.marker([res[i]['location']['coordinates'][1], res[i]['location']['coordinates'][0]], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<br>Room types:"+res[i]['Rooms']+"</p>"+"<button class='btn search' id='bookmarkbtn' value='"+res[i]['id']+","+res[i]['block']+"' onClick='runBookmarks(this.value)'>Bookmark this flat</button>"),customOptions).addTo(housingGroup);
+            L.marker([res[i]['location']['coordinates'][1], res[i]['location']['coordinates'][0]], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<br>Room types:"+res[i]['Rooms']+"</p>"+"<button class='btn search' id='bookmarkbtn' value='"+res[i]['id']+","+res[i]['block']+","+res[i]['postal_code']+"' onClick='runBookmarks(this.value)'>Bookmark this flat</button>"),customOptions).addTo(housingGroup);
         }
       }
 

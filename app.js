@@ -52,7 +52,8 @@ var registerSchema = new Schema({
     email: String,
     username: String,
     password: String,
-    created_time: Date
+    created_time: Date,
+    resid_bookmarks: Array
 
 }, {collection:"user"});
 
@@ -62,13 +63,13 @@ app.post('/register', (req, res) => {
     var remail = req.body.email;
     var rusername = req.body.username;
     var rpassword = cryptr.encrypt(req.body.password);
-    var rtime = new Date();
+    var rtimer = new Date();
 
     var registerData = new registerModel({
         email: remail,
         username: rusername,
         password: rpassword,
-        created_time: rtime
+        created_time: rtimer
     });
 
     registerData.save(function(err,result) {
@@ -440,6 +441,62 @@ app.get('/npp', (req, res) => {
 });
 });
 
+//Route for bookmark for POST request to use on the Mongo query
+
+var bookmarkSchema = new Schema({
+    resid_bookmarks: Array
+
+}, {collection:"user"});
+
+var bookmarkModel = mongoose.model('bookmarkModel', bookmarkSchema);
+
+app.post('/bookmark', (req, res) => {
+
+    var locationId = req.body.location;
+    var block = req.body.block;
+    var postalCode = req.body.postal_code
+
+    console.log(postalCode);
+
+    bookmarkModel.findOneAndUpdate(
+    { username: globalusername }, 
+    { $push: {
+        resid_bookmarks: postalCode
+    }}, function(err, product){
+        if (err) throw err;
+        console.log("Bookmarked!");
+        res.send(results);
+    });
+});
+
+// //Route for bookmark for GET request to use on the SQL query
+app.get('/bookmark', (req, res) => {
+
+    bookmarkModel.aggregate([
+        {$unwind: "$resid_bookmarks"},{ $lookup: { from:"residential", localField:"resid_bookmarks", foreignField:"postal_code", as:"bookmark_details" }}
+    ]).exec((err, result) => {
+        if (err) throw err;
+        res.send(result);
+        console.log(result);
+    })
+});
+
+// //Route for bookmark for GET request to use on the SQL query
+app.delete('/bookmark', (req, res) => {
+
+    bookmarkId = req.body.bid;
+    console.log(bookmarkId);
+    bookmarkModel.update(
+    {username: globalusername},
+    { $pull: {
+        resid_bookmarks: bookmarkId
+    }}, function(err,result){
+        if (err) throw err;
+        console.log("Deleted!");
+        res.send(result);
+    })
+
+});
 
 // Defne which port to run local server
 app.listen('8888', () => {
