@@ -175,7 +175,7 @@ CREATE TABLE User_bookmarks_Location(
 );
 
 CREATE VIEW Housing AS
-	SELECT l.longitude, l.latitude, r.block, r.year, r.floors, la.locale_name, rr.room_id
+	SELECT l.id, l.longitude, l.latitude,r.postal_code, r.block, r.year, r.floors, la.locale_name, rr.room_id
 	FROM residential r, Location l, locale_area la, locale_postal lp, room rm, resid_room rr
 	WHERE r.lid = l.id
 	AND la.id = lp. id 
