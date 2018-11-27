@@ -89,4 +89,12 @@ function deleteBookmark(bid) {
 	});
 };
 
+function setgrantA(postal){
+	document.getElementById('grantA').value = postal;
+};
+
+function setgrantB(postal){
+	document.getElementById('grantB').value = postal;
+};
+
 runBookmarksQuery();

@@ -181,8 +181,32 @@
 		<div id="grantModal" class="sideModal">
 			<div class="closeModal">X</div>
 			<div class="bar"></div>
-			<h1>Grant</h1>
-			<p>Filter any HDB houses in Singapore catered to your needs.</p>
+			<h1>Housing value</h1>
+			<p>Enter the postal code of the flat and it will estimate the current value of the flat.</p>
+			<form id="grantajax" method="POST" action="/grant">
+				<h2>Your location:</h2>
+				<div class="form-group">
+		            <input id="grantA" type="text" name="mylocation" class="form-control" placeholder="Postal Code" readonly>
+		        </div>
+		        <h2>Parent's location:</h2>
+				<div class="form-group">
+		            <input id="grantB" type="text" name="parentlocation" class="form-control" placeholder="Postal Code" readonly>
+		        </div>
+		        <h2>Marital Status:</h2>
+	            <select class="custom-select" name="marital">
+					<option selected value="single">Single</option>
+					<option value="married">Married</option>
+				</select>
+		        <button type="submit" class="btn search" value="Submit">Check</button>
+		        <br><br><br>
+		        <h2>Status:<br> 
+		        	<span id="eligibility" style="color: #F53240; font-size: 25px">Eligible</span>
+		        </h2>
+		        <br>
+		        <h2>Grant given:<br> 
+		        	<span id="grantCost" style="color: #F53240; font-size: 25px">$0</span>
+		        </h2>
+			</form>
 		</div>
 
 		<div id="bookmarkModal" class="sideModal">
@@ -248,5 +272,6 @@
 <script type="text/javascript" src="js/interface.js"></script>
 <script src="js/housingajax.js"></script>		
 <script src="js/amenitiesajax.js"></script>
+<script src="js/grantajax.js"></script>	
 <script src="js/bookmarkajax.js"></script>		
 </html>

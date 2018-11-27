@@ -91,12 +91,15 @@ app.get('/housing', (req, res) => {
     var syear = year.split("-")[0];
     var eyear = year.split("-")[1]
     var room = String(req.query.room);
+    var postal = req.query.postal_code;
+
+    console.log(postal);
 
     room = "(" + room + ")";
 
     //let housingQuery = "SELECT Distinct longitude, latitude, block, year, floors FROM group8.housing WHERE  locale_name LIKE " + "'%" + locale + "%'" + " AND year > "+ syear +" AND year < "+ eyear +" AND room_id in "+room+";";
 
-    let housingQuery = "SELECT Distinct longitude, latitude, housing.id, block, year, floors, GROUP_CONCAT(room.room_type) As Rooms FROM housing JOIN room on housing.room_id = room.id WHERE locale_name LIKE " + "'%" + locale + "%'" + " AND year > "+ syear +" AND year < "+ eyear +" AND room_id in "+room+"GROUP BY longitude, latitude;"
+    let housingQuery = "SELECT Distinct longitude, latitude, housing.id, postal_code, block, year, floors, GROUP_CONCAT(room.room_type) As Rooms FROM housing JOIN room on housing.room_id = room.id WHERE locale_name LIKE " + "'%" + locale + "%'" + " AND year > "+ syear +" AND year < "+ eyear +" AND room_id in "+room+"GROUP BY longitude, latitude;"
 
     let query = db.query(housingQuery,(err,results) => {
         if (err) throw err;
@@ -191,7 +194,18 @@ app.get('/busstops', (req, res) => {
 
     console.log(proximity,latitude,longitude);
 
-    let busQuery = "SELECT l.* , b.* , s.* FROM (SELECT id, latitude, longitude, stid , 3956 * ACOS(COS(RADIANS("+latitude+")) * COS(RADIANS(`latitude`)) * COS(RADIANS("+longitude+") - RADIANS(`longitude`)) + SIN(RADIANS("+latitude+")) * SIN(RADIANS(`latitude`))) AS `distance`FROM location WHERE`latitude` BETWEEN "+latitude+" - ("+proximity+"/69) AND "+latitude+" + ("+proximity+"/69) AND `longitude` BETWEEN "+longitude+" - ("+proximity+"/(69 * COS(RADIANS("+latitude+")))) AND "+longitude+" + ("+proximity+"/(69* COS(RADIANS("+latitude+"))))) l, bus_stop b, Street s WHERE `distance` <"+proximity+" AND b.lid = l.id AND l.stid = s.id ORDER BY `distance` ASC;"; 
+    //let busQuery = "SELECT l.* , b.* , s.* FROM (SELECT id, latitude, longitude, stid , 3956 * ACOS(COS(RADIANS("+latitude+")) * COS(RADIANS(`latitude`)) * COS(RADIANS("+longitude+") - RADIANS(`longitude`)) + SIN(RADIANS("+latitude+")) * SIN(RADIANS(`latitude`))) AS `distance`FROM location WHERE`latitude` BETWEEN "+latitude+" - ("+proximity+"/69) AND "+latitude+" + ("+proximity+"/69) AND `longitude` BETWEEN "+longitude+" - ("+proximity+"/(69 * COS(RADIANS("+latitude+")))) AND "+longitude+" + ("+proximity+"/(69* COS(RADIANS("+latitude+"))))) l, bus_stop b, Street s WHERE `distance` <"+proximity+" AND b.lid = l.id AND l.stid = s.id ORDER BY `distance` ASC;"; 
+
+    let busQuery = "SELECT bs.* "+
+   "FROM (SELECT *, 3956 * ACOS(COS(RADIANS("+latitude+")) * COS(RADIANS(`latitude`)) "+
+   "* COS(RADIANS("+longitude+") - RADIANS(`longitude`)) + "+
+   "SIN(RADIANS("+latitude+")) * SIN(RADIANS(`latitude`))) "+
+   "AS `distance`FROM bus_stop_distance "+
+   "WHERE`latitude` BETWEEN "+latitude+" - ("+proximity+"/69) "+
+   "AND "+latitude+" + ("+proximity+"/69) "+
+   "AND `longitude` BETWEEN "+longitude+" - ("+proximity+"/(69 * COS(RADIANS("+latitude+")))) "+
+   "AND "+longitude+" + ("+proximity+"/(69* COS(RADIANS("+latitude+"))))) bs "+
+   "ORDER BY `distance` ASC;"
 
     let query = db.query(busQuery,(err,results) => {
         if (err) throw err;
@@ -207,7 +221,21 @@ app.get('/npc', (req, res) => {
 
     console.log(proximity,latitude,longitude);
 
-    let npcQuery = "SELECT l.* , n.*, nc.division_name , s.* FROM (SELECT id, latitude, longitude, stid , 3956 * ACOS(COS(RADIANS("+latitude+")) * COS(RADIANS(`latitude`)) * COS(RADIANS("+longitude+") - RADIANS(`longitude`)) + SIN(RADIANS("+latitude+")) * SIN(RADIANS(`latitude`))) AS `distance`FROM location WHERE`latitude` BETWEEN "+latitude+" - ("+proximity+"/69) AND "+latitude+" + ("+proximity+"/69) AND `longitude` BETWEEN "+longitude+" - ("+proximity+"/(69 * COS(RADIANS("+latitude+")))) AND "+longitude+" + ("+proximity+"/(69* COS(RADIANS("+latitude+"))))) l, npc n, npc_category nc, Street s WHERE `distance` <"+proximity+" AND n.lid = l.id AND n.division_id = nc.id AND n.npc_name NOT LIKE '%post%' AND l.stid = s.id ORDER BY `distance` ASC;"; 
+    //let npcQuery = "SELECT l.* , n.*, nc.division_name , s.* FROM (SELECT id, latitude, longitude, stid , 3956 * ACOS(COS(RADIANS("+latitude+")) * COS(RADIANS(`latitude`)) * COS(RADIANS("+longitude+") - RADIANS(`longitude`)) + SIN(RADIANS("+latitude+")) * SIN(RADIANS(`latitude`))) AS `distance`FROM location WHERE`latitude` BETWEEN "+latitude+" - ("+proximity+"/69) AND "+latitude+" + ("+proximity+"/69) AND `longitude` BETWEEN "+longitude+" - ("+proximity+"/(69 * COS(RADIANS("+latitude+")))) AND "+longitude+" + ("+proximity+"/(69* COS(RADIANS("+latitude+"))))) l, npc n, npc_category nc, Street s WHERE `distance` <"+proximity+" AND n.lid = l.id AND n.division_id = nc.id AND n.npc_name NOT LIKE '%post%' AND l.stid = s.id ORDER BY `distance` ASC;"; 
+
+    let npcQuery = "SELECT n.* "+
+   "FROM (SELECT *, 3956 * ACOS(COS(RADIANS("+latitude+")) * COS(RADIANS(`latitude`)) "+
+   "* COS(RADIANS("+longitude+") - RADIANS(`longitude`)) + "+
+   "SIN(RADIANS("+latitude+")) * SIN(RADIANS(`latitude`))) "+
+   "AS `distance`FROM "+
+   "npc_distance "+
+   "WHERE`latitude` BETWEEN "+latitude+" - ("+proximity+"/69) "+
+   "AND "+latitude+" + ("+proximity+"/69) "+
+   "AND `longitude` BETWEEN "+longitude+" - ("+proximity+"/(69 * COS(RADIANS("+latitude+")))) "+
+   "AND "+longitude+" + ("+proximity+"/(69* COS(RADIANS("+latitude+")))) "+
+   "AND npc_name NOT LIKE '%post%') n "+
+   "ORDER BY `distance` ASC;";
+
 
     let query = db.query(npcQuery,(err,results) => {
         if (err) throw err;
@@ -223,8 +251,21 @@ app.get('/npp', (req, res) => {
 
     console.log(proximity,latitude,longitude);
 
-    let nppQuery = "SELECT l.* , n.*, nc.division_name , s.* FROM (SELECT id, latitude, longitude, stid , 3956 * ACOS(COS(RADIANS("+latitude+")) * COS(RADIANS(`latitude`)) * COS(RADIANS("+longitude+") - RADIANS(`longitude`)) + SIN(RADIANS("+latitude+")) * SIN(RADIANS(`latitude`))) AS `distance`FROM location WHERE`latitude` BETWEEN "+latitude+" - ("+proximity+"/69) AND "+latitude+" + ("+proximity+"/69) AND `longitude` BETWEEN "+longitude+" - ("+proximity+"/(69 * COS(RADIANS("+latitude+")))) AND "+longitude+" + ("+proximity+"/(69* COS(RADIANS("+latitude+"))))) l, npc n, npc_category nc, Street s WHERE `distance` <"+proximity+" AND n.lid = l.id AND n.division_id = nc.id AND n.npc_name LIKE '%post%' AND l.stid = s.id ORDER BY `distance` ASC;"; 
+    //let nppQuery = "SELECT l.* , n.*, nc.division_name , s.* FROM (SELECT id, latitude, longitude, stid , 3956 * ACOS(COS(RADIANS("+latitude+")) * COS(RADIANS(`latitude`)) * COS(RADIANS("+longitude+") - RADIANS(`longitude`)) + SIN(RADIANS("+latitude+")) * SIN(RADIANS(`latitude`))) AS `distance`FROM location WHERE`latitude` BETWEEN "+latitude+" - ("+proximity+"/69) AND "+latitude+" + ("+proximity+"/69) AND `longitude` BETWEEN "+longitude+" - ("+proximity+"/(69 * COS(RADIANS("+latitude+")))) AND "+longitude+" + ("+proximity+"/(69* COS(RADIANS("+latitude+"))))) l, npc n, npc_category nc, Street s WHERE `distance` <"+proximity+" AND n.lid = l.id AND n.division_id = nc.id AND n.npc_name LIKE '%post%' AND l.stid = s.id ORDER BY `distance` ASC;"; 
 
+    let nppQuery = "SELECT n.* "+
+   "FROM (SELECT *, 3956 * ACOS(COS(RADIANS("+latitude+")) * COS(RADIANS(`latitude`)) "+
+   "* COS(RADIANS("+longitude+") - RADIANS(`longitude`)) + "+
+   "SIN(RADIANS("+latitude+")) * SIN(RADIANS(`latitude`))) "+
+   "AS `distance`FROM "+
+   "npc_distance "+
+   "WHERE`latitude` BETWEEN "+latitude+" - ("+proximity+"/69) "+
+   "AND "+latitude+" + ("+proximity+"/69) "+
+   "AND `longitude` BETWEEN "+longitude+" - ("+proximity+"/(69 * COS(RADIANS("+latitude+")))) "+
+   "AND "+longitude+" + ("+proximity+"/(69* COS(RADIANS("+latitude+")))) "+
+   "AND npc_name LIKE '%post%') n "+
+   "ORDER BY `distance` ASC;";
+    
     let query = db.query(nppQuery,(err,results) => {
         if (err) throw err;
         res.send(results);
@@ -239,11 +280,75 @@ app.get('/hawker', (req, res) => {
 
     console.log(proximity,latitude,longitude);
 
-    let hawkerQuery = "SELECT l.* , h.* , s.* FROM (SELECT id, latitude, longitude, stid , 3956 * ACOS(COS(RADIANS("+latitude+")) * COS(RADIANS(`latitude`)) * COS(RADIANS("+longitude+") - RADIANS(`longitude`)) + SIN(RADIANS("+latitude+")) * SIN(RADIANS(`latitude`))) AS `distance`FROM location WHERE`latitude` BETWEEN "+latitude+" - ("+proximity+"/69) AND "+latitude+" + ("+proximity+"/69) AND `longitude` BETWEEN "+longitude+" - ("+proximity+"/(69 * COS(RADIANS("+latitude+")))) AND "+longitude+" + ("+proximity+"/(69* COS(RADIANS("+latitude+"))))) l, hawker_centre h, npc_category nc, Street s WHERE `distance` <"+proximity+" AND h.lid = l.id AND l.stid = s.id ORDER BY `distance` ASC;"; 
+    //let hawkerQuery = "SELECT l.* , h.* , s.* FROM (SELECT id, latitude, longitude, stid , 3956 * ACOS(COS(RADIANS("+latitude+")) * COS(RADIANS(`latitude`)) * COS(RADIANS("+longitude+") - RADIANS(`longitude`)) + SIN(RADIANS("+latitude+")) * SIN(RADIANS(`latitude`))) AS `distance`FROM location WHERE`latitude` BETWEEN "+latitude+" - ("+proximity+"/69) AND "+latitude+" + ("+proximity+"/69) AND `longitude` BETWEEN "+longitude+" - ("+proximity+"/(69 * COS(RADIANS("+latitude+")))) AND "+longitude+" + ("+proximity+"/(69* COS(RADIANS("+latitude+"))))) l, hawker_centre h, npc_category nc, Street s WHERE `distance` <"+proximity+" AND h.lid = l.id AND l.stid = s.id ORDER BY `distance` ASC;"; 
 
+    let hawkerQuery = "SELECT h.* "+
+   "FROM (SELECT *, 3956 * ACOS(COS(RADIANS("+latitude+")) * COS(RADIANS(`latitude`)) "+
+   "* COS(RADIANS("+longitude+") - RADIANS(`longitude`)) + "+
+   "SIN(RADIANS("+latitude+")) * SIN(RADIANS(`latitude`))) "+
+   "AS `distance`FROM "+
+   "hawker_distance "+
+   "WHERE`latitude` BETWEEN "+latitude+" - ("+proximity+"/69) "+
+   "AND "+latitude+" + ("+proximity+"/69) "+
+   "AND `longitude` BETWEEN "+longitude+" - ("+proximity+"/(69 * COS(RADIANS("+latitude+")))) "+
+   "AND "+longitude+" + ("+proximity+"/(69* COS(RADIANS("+latitude+"))))) h "+
+   "ORDER BY `distance` ASC;"
+    
     let query = db.query(hawkerQuery,(err,results) => {
         if (err) throw err;
         res.send(results);
+    });
+});
+
+//Route for housing for POST request from the grant form
+app.post('/grant', (req, res) => {
+  const grantResults = {
+    userPostal: req.body.mylocation,
+    parentPostal: req.body.parentlocation,
+    marital: req.body.marital
+  }
+  res.send(grantResults);
+});
+
+//Route for housing for GET request to use on the SQL query
+app.get('/grant', (req, res) => {
+    var userPostal = req.query.userPostal;
+    var parentPostal = req.query.parentPostal;
+    var marital = req.query.marital;
+
+    let grantQuery1 = "SELECT DISTINCT longitude, latitude FROM housing WHERE postal_code = '"+parentPostal+"'";
+
+    let query = db.query(grantQuery1,(err,results) => {
+        if (err) throw err;
+        var queryLatitude = results[0]['latitude'];
+        var queryLongitude = results[0]['longitude'];
+
+        let grantQuery2 = "SELECT count(DISTINCT postal_code) as eligible, "+
+        "(6371 * acos(cos( radians ("+queryLatitude+" ) ) * cos( radians( `latitude` ) ) * cos(radians( `longitude` ) - radians("+queryLongitude+")) + sin(radians("+queryLatitude+")) * sin(radians(`latitude`)))) "+
+        "AS `distance` "+
+        "FROM housing "+
+        "WHERE postal_code = '"+userPostal+"' "+
+        "HAVING `distance` < 4 " +
+        "ORDER BY `distance` ASC; ";
+
+        let query2 = db.query(grantQuery2,(err,results) => {
+          if (err) throw err;
+
+          try{
+            var eligibility = results[0]['eligible'];
+            var cost = 0;
+            if (marital == "single"){
+              cost = 10000
+            }
+            if (marital == "married"){
+              cost = 20000
+            }
+            res.send({'eligibility': 1, 'cost':cost});
+          }
+          catch(err){
+            res.send({'eligibility': 0});
+          }
+        });
     });
 });
 
@@ -253,7 +358,7 @@ app.post('/bookmark', (req, res) => {
   var locationId = req.body.location;
   var block = req.body.block;
 
-  //console.log(block);
+  console.log(locationId);
 
   let bookmarkQuery = "INSERT INTO user_bookmarks_location (uid, lid, bookmark_name) VALUES ((SELECT id FROM User WHERE username = '"+globalusername+"' LIMIT 1), "+ locationId+", '"+block+"');";
 

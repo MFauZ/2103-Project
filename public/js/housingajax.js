@@ -56,13 +56,13 @@ $(() => {
       if (pathname =='/'){
         // Loop through contents of JSON query (Not login)
         for (i=0; i<res.length;i++){
-            L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<br>Room types:"+res[i]['Rooms']+"</p>"),customOptions).addTo(housingGroup);
+            L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Postal code:"+res[i]['postal_code']+"<br>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<br>Room types:"+res[i]['Rooms']+"</p>"),customOptions).addTo(housingGroup);
         }
       }
       else{
         // Loop through contents of JSON query (User login)
         for (i=0; i<res.length;i++){
-            L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<br>Room types:"+res[i]['Rooms']+"</p>"+"<button class='btn search' id='bookmarkbtn' value='"+res[i]['id']+","+res[i]['block']+"' onClick='runBookmarks(this.value)'>Bookmark this flat</button>"),customOptions).addTo(housingGroup);
+            L.marker([res[i]['latitude'], res[i]['longitude']], {icon: housingIcon}).bindPopup(popupContents("<b>Block "+res[i]['block']+"</b><p>Postal code:"+res[i]['postal_code']+"<br>Year built:"+res[i]['year']+"<br>Floors:"+res[i]['floors']+"<br>Room types:"+res[i]['Rooms']+"</p>"+"<button class='btn search' id='bookmarkbtn' value='"+res[i]['id']+","+res[i]['block']+"' onClick='runBookmarks(this.value)'>Bookmark this flat</button><br><button class='btn grantA' id='bookmarkbtn' value='"+res[i]['postal_code']+"' onClick='setgrantA(this.value)'>Mine</button><button class='btn grantB' id='bookmarkbtn' value='"+res[i]['postal_code']+"' onClick='setgrantB(this.value)'>Parents</button>"),customOptions).addTo(housingGroup);
         }
       }
 
@@ -76,7 +76,6 @@ $(() => {
   function popupContents(string){
     return string;
   };
-
 });
 
 console.log("Housing AJAX assets loaded");
