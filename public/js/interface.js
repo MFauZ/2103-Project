@@ -55,10 +55,15 @@ amenitiesButton.onclick = function(){
 	console.log("Amenities show");
 };
 
-grantButton.onclick = function(){
-	grantModal.classList.toggle("clicked");
-	console.log("Amenities show");
-};
+try {
+	grantButton.onclick = function(){
+		grantModal.classList.toggle("clicked");
+		console.log("Amenities show");
+	};
+}
+catch(err) {
+	console.log("Grants not found")
+}
 
 profileButton.onclick = function(){
 	profileModal.classList.toggle("clicked");

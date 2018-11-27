@@ -119,6 +119,7 @@ app.post('/login', (req, res) => {
 
 //Route to get session ID if valid (Token is username encrypted)
 app.get('/session', function (req, res) {
+    console.log(globalusername);
     res.render('map',{
         user : globalusername
     });
@@ -195,7 +196,7 @@ app.get('/primarysch', (req, res) => {
         level: "PRIMARY",
         location: {
          $near: {
-            $maxDistance: 2000 * proximity,
+            $maxDistance: (1000 * proximity),
             $geometry: {
                 type: "Point",
                 coordinates: [longitude, latitude]
@@ -234,7 +235,7 @@ app.get('/secondarysch', (req, res) => {
         level: "SECONDARY",
         location: {
          $near: {
-            $maxDistance: 2000 * proximity,
+            $maxDistance: 1000 * proximity,
             $geometry: {
                 type: "Point",
                 coordinates: [longitude, latitude]
@@ -273,7 +274,7 @@ app.get('/combinedsch', (req, res) => {
         level: {$nin : ["PRIMARY", "SECONDARY"]},
         location: {
          $near: {
-            $maxDistance: 2000 * proximity,
+            $maxDistance: 1000 * proximity,
             $geometry: {
                 type: "Point",
                 coordinates: [longitude, latitude]
@@ -311,7 +312,7 @@ app.get('/hawker', (req, res) => {
     hawkerModel.find({
         location: {
          $near: {
-            $maxDistance: 2000 * proximity,
+            $maxDistance: 1000 * proximity,
             $geometry: {
                 type: "Point",
                 coordinates: [longitude, latitude]
@@ -323,6 +324,77 @@ app.get('/hawker', (req, res) => {
     console.log(result);
     res.send(result);
 });
+});
+
+//Route for housing for POST request from the grant form
+
+var grantSchema = new Schema({
+    postal_code: String,    
+    location: {
+     type: { type: String },
+     coordinates: []
+ },
+}, {collection:"residential"});
+
+grantSchema.index({ location: "2dsphere" });
+
+var grantModel = mongoose.model('grantModel', grantSchema);
+
+app.post('/grant', (req, res) => {
+  const grantResults = {
+    userPostal: req.body.mylocation,
+    parentPostal: req.body.parentlocation,
+    marital: req.body.marital
+  }
+  res.send(grantResults);
+});
+
+//Route for housing for GET request to use on the SQL query
+app.get('/grant', (req, res) => {
+    var userPostal = req.query.userPostal;
+    var parentPostal = req.query.parentPostal;
+    var marital = req.query.marital;
+
+    console.log(userPostal,parentPostal,marital);
+
+    //Find coordinates for parent based on postal code
+    grantModel.find({
+        postal_code: parentPostal
+    }, function(err,result){
+        if (err) throw err;
+        var parentCoordinates = result[0]['location']['coordinates'];
+        //Find coordinates for user based on parent's coordinates of 4km
+        grantModel.find({
+            postal_code: userPostal,
+                location: {
+                 $near: {
+                    $maxDistance: 4000,
+                    $geometry: {
+                        type: "Point",
+                        coordinates: parentCoordinates
+                    }
+                }
+            }}, function(err,result){
+            if (err) throw err;
+            console.log(result.length);
+
+            var eligibility = result.length;
+            var cost = 0;
+
+            if (eligibility == 1){
+                if (marital == "single"){
+                cost = 10000;
+                }
+                if (marital == "married"){
+                   cost = 20000
+                }
+                res.send({'eligibility': 1, 'cost':cost});
+            }
+            else{
+                res.send({'eligibility': 0});
+            }
+        });
+    });
 });
 
 
@@ -349,7 +421,7 @@ app.get('/busstops', (req, res) => {
     bus_stopModel.find({
         location: {
          $near: {
-            $maxDistance: 2000 * proximity,
+            $maxDistance: 1000 * proximity,
             $geometry: {
                 type: "Point",
                 coordinates: [longitude, latitude]
@@ -388,7 +460,7 @@ app.get('/npc', (req, res) => {
         npc_name: {$regex: /Police Centre/},
         location: {
          $near: {
-            $maxDistance: 2000 * proximity,
+            $maxDistance: 1000 * proximity,
             $geometry: {
                 type: "Point",
                 coordinates: [longitude, latitude]
@@ -427,7 +499,7 @@ app.get('/npp', (req, res) => {
         npc_name: {$regex: /Police Post/},
         location: {
          $near: {
-            $maxDistance: 2000 * proximity,
+            $maxDistance: 1000 * proximity,
             $geometry: {
                 type: "Point",
                 coordinates: [longitude, latitude]
@@ -462,10 +534,10 @@ app.post('/bookmark', (req, res) => {
     { username: globalusername }, 
     { $push: {
         resid_bookmarks: postalCode
-    }}, function(err, product){
+    }}, function(err, result){
         if (err) throw err;
         console.log("Bookmarked!");
-        res.send(results);
+        res.send(result);
     });
 });
 

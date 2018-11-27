@@ -82,6 +82,25 @@ html, body {
 	box-shadow: 0 4px 2px -2px gray;
 }
 
+.grantA{
+	width: 48%;
+	font-size:15px;
+	background: #BC1A2D;
+	color:#FFF;
+	margin-top:15px;
+	box-shadow: 0 4px 2px -2px gray;
+}
+
+.grantB{
+	width: 48%;
+	font-size:15px;
+	background: #D30037;
+	color:#FFF;
+	margin-top:15px;
+	float:right;
+	box-shadow: 0 4px 2px -2px gray;
+}
+
 .acc{
 	width: 100%;
 	font-size:15px;
